@@ -1,0 +1,22 @@
+# Build output
+build/
+export/
+dist/
+
+# Temporary files
+*.tmp
+*.log
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Node modules (if your CT.js project uses npm packages)
+node_modules/
+
+# CT.js project backups
+*.bak
+*.backup
+
+# Environment files
+.env
