@@ -1,0 +1,122 @@
+ctjsVersion: 5.2.1
+backups: 2
+language: typescript
+notes: /* empty */
+libs:
+  place:
+    gridX: 1024
+    gridY: 1024
+  pointer: {}
+  keyboard: {}
+  keyboard.polyfill: {}
+  pointer.polyfill: {}
+startroom: -1
+contentTypes: []
+actions: []
+scripts: []
+assets:
+  - type: room
+    oncreate: ''
+    onstep: ''
+    ondraw: ''
+    onleave: ''
+    gridX: 64
+    gridY: 64
+    diagonalGrid: false
+    disableGrid: false
+    simulate: true
+    width: 1920
+    height: 1080
+    restrictCamera: false
+    restrictMaxX: 1280
+    restrictMinX: 0
+    restrictMaxY: 720
+    restrictMinY: 0
+    isUi: false
+    name: MainScene
+    backgroundColor: '#000000'
+    follow: -1
+    backgrounds: []
+    copies: []
+    tiles: []
+    extends: {}
+    lastmod: 1759592202401
+    events: []
+    behaviors: []
+    extendTypes: ''
+    uid: 6ntH8Rg2zmgMMK
+  - type: folder
+    uid: 3QtwCqzQ2HftCz
+    colorClass: error
+    icon: user
+    name: Actors
+    lastmod: 1759590802858
+    entries: []
+  - type: folder
+    uid: pkjrtnLhC9NBrD
+    colorClass: text
+    icon: help-circle
+    name: UI
+    lastmod: 1759590849422
+    entries: []
+  - type: folder
+    uid: 8Jq4pnK4hfffPM
+    colorClass: warning
+    icon: help-circle
+    name: Sprites
+    lastmod: 1759590857058
+    entries: []
+globalVars: []
+settings:
+  authoring:
+    author: fiordarancio;hippity-hoppity;ste-dtst
+    site: ''
+    title: Collector
+    version:
+      - 0
+      - 0
+      - 1
+    versionPostfix: ''
+    appId: ''
+  rendering:
+    usePixiLegacy: true
+    transparent: false
+    maxFPS: 60
+    pixelatedrender: false
+    highDensity: true
+    desktopMode: maximized
+    hideCursor: false
+    mobileScreenOrientation: unspecified
+    viewMode: scaleFit
+  export:
+    showErrors: true
+    errorsLink: ''
+    autocloseDesktop: true
+    windows: true
+    linux: true
+    mac: true
+    functionWrap: false
+    codeModifier: none
+    bundleAssetTree: false
+    bundleAssetTypes:
+      texture: true
+      template: true
+      room: true
+      behavior: false
+      typeface: false
+      sound: false
+      style: false
+      tandem: false
+      script: false
+      enum: false
+  branding:
+    accent: '#446adb'
+    invertPreloaderScheme: true
+    icon: -1
+    splashScreen: -1
+    forceSmoothIcons: false
+    forceSmoothSplashScreen: false
+    hideLoadingLogo: false
+    alternativeLogo: false
+    customLoadingText: ''
+  fps: 30
