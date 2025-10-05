@@ -27,22 +27,96 @@ assets:
     simulate: true
     width: 1920
     height: 1080
-    restrictCamera: false
-    restrictMaxX: 1280
+    restrictCamera: true
+    restrictMaxX: 1920
     restrictMinX: 0
-    restrictMaxY: 720
+    restrictMaxY: 1080
     restrictMinY: 0
     isUi: false
     name: MainScene
     backgroundColor: '#000000'
     follow: -1
-    backgrounds: []
-    copies: []
+    backgrounds:
+      - depth: 0
+        texture: wwr2zMrqjbwFb9
+        shiftX: 0
+        shiftY: 0
+        parallaxX: 1
+        parallaxY: 1
+        movementX: 0
+        movementY: 0
+        scaleX: 1
+        scaleY: 1
+        repeat: repeat
+    copies:
+      - x: -704
+        'y': -320
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: WPcLqW4147Ft77
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 320
+        'y': 384
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: WPcLqW4147Ft77
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 960
+        'y': 768
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: WPcLqW4147Ft77
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 1728
+        'y': 640
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: WPcLqW4147Ft77
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 1216
+        'y': 512
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: nL5WjpR1g2nCMF
+        exts: {}
+        customProperties: {}
+        bindings: {}
     tiles: []
-    extends: {}
-    lastmod: 1759592202401
+    extends:
+      treeSpots: []
+      treeSpotPosX: {}
+    lastmod: 1759654193809
     events: []
-    behaviors: []
+    behaviors:
+      - Nrn5N9Jf19FjQC
     extendTypes: ''
     uid: 6ntH8Rg2zmgMMK
   - type: folder
@@ -51,21 +125,522 @@ assets:
     icon: user
     name: Actors
     lastmod: 1759590802858
-    entries: []
+    entries:
+      - type: template
+        baseClass: AnimatedSprite
+        name: BackBird_A
+        depth: 0
+        texture: CLqtnbmKTFqcwc
+        playAnimationOnStart: false
+        loopAnimation: false
+        animationFPS: 30
+        visible: true
+        events:
+          - eventKey: OnDraw
+            code: |-
+              // Check next position is occupied
+              const target = { x: this.targetSpotX, y: this.targetSpotY};
+              const shouldStop = u.distance(this, target) < 10;
+              if (shouldStop) {
+                  // Move directly to next spot position
+                  this.position = target
+                  console.log("Stopping at [${this.position.x},${this.position.y}]")
+                  // Pick next spot and get direction
+                  var spot = globalThis.nextSpot(target.x, target.y)
+                  this.targetSpotX = spot[0]
+                  this.targetSpotY = spot[1]
+                  // Get direction
+                  this.direction = u.direction(this, {x: this.targetSpotX, y:this.targetSpotY})
+              }
+
+              this.move()
+            arguments: {}
+            lib: core
+          - eventKey: OnCreate
+            code: >
+              this.speed = 60
+
+
+              // Set direction to next spot
+
+              this.direction = u.direction(this, {x: this.targetSpotX, y:
+              this.targetSpotY})
+            arguments: {}
+            lib: core
+        extends:
+          cgroup: Bird
+          isPlayerPointing: false
+          birdSound: 2n32prWLKBfkk6
+          targetSpotX: 0
+          targetSpotY: 0
+          targetSpot:
+            x: 0
+            'y': 0
+        lastmod: 1759654185935
+        uid: nL5WjpR1g2nCMF
+        behaviors:
+          - tL8L74bG19RKmN
+          - Lf6MPhwNkFM9Gq
+        extendTypes: ''
+      - type: behavior
+        name: SoundArea
+        behaviorType: template
+        events:
+          - eventKey: OnPointerEnter
+            code: |-
+              if (!this.isPlayerPointing) {
+                  this.isPlayerPointing = true
+                  sounds.fade(this.birdSound, 1, 1000)
+              }
+            arguments: {}
+            lib: core
+          - eventKey: OnPointerLeave
+            code: |-
+              if (this.isPlayerPointing) {
+                  this.isPlayerPointing = false
+                  sounds.fade(this.birdSound, 1, 1000)
+              }
+            arguments: {}
+            lib: core
+        specification:
+          - structure: atomic
+            type: checkbox
+            mappedType: number
+            name: isPlayerPointing
+            readableName: isPlayerPointing
+            required: false
+            fixedLength: 0
+          - structure: atomic
+            type: sound
+            mappedType: number
+            name: birdSound
+            readableName: birdSound
+            required: true
+            fixedLength: 0
+        extendTypes: ''
+        lastmod: 1759598281220
+        uid: tL8L74bG19RKmN
+      - type: template
+        baseClass: AnimatedSprite
+        name: TreeSpot
+        depth: 0
+        texture: 3k1H1q97FLTFrW
+        playAnimationOnStart: false
+        loopAnimation: true
+        animationFPS: 30
+        visible: true
+        events:
+          - eventKey: collisionTemplate
+            code: console.log("Collided with bird!")
+            arguments:
+              template: nL5WjpR1g2nCMF
+            lib: place
+        extends:
+          cgroup: TreeSpot
+        lastmod: 1759654234332
+        uid: WPcLqW4147Ft77
+        behaviors: []
+        extendTypes: ''
+      - type: behavior
+        name: TargetSpot
+        behaviorType: template
+        events:
+          - eventKey: OnCreate
+            code: >-
+              const initialTarget = globalThis.nextSpot(this.position.x,
+              this.position.y)
+
+              this.targetSpotX = initialTarget[0]
+
+              this.targetSpotY = initialTarget[1]
+            arguments: {}
+            lib: core
+        specification:
+          - structure: atomic
+            type: number
+            mappedType: number
+            name: targetSpotX
+            readableName: targetSpotX
+            required: false
+            fixedLength: 0
+          - structure: atomic
+            type: number
+            mappedType: number
+            name: targetSpotY
+            readableName: targetSpotY
+            required: false
+            fixedLength: 0
+        extendTypes: ''
+        lastmod: 1759654188961
+        uid: Lf6MPhwNkFM9Gq
   - type: folder
     uid: pkjrtnLhC9NBrD
     colorClass: text
-    icon: help-circle
+    icon: font
     name: UI
     lastmod: 1759590849422
     entries: []
   - type: folder
     uid: 8Jq4pnK4hfffPM
     colorClass: warning
-    icon: help-circle
+    icon: image
     name: Sprites
     lastmod: 1759590857058
-    entries: []
+    entries:
+      - lastmod: 1759598765752
+        type: texture
+        name: bird_C
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 96
+          - 96
+        marginx: 0
+        marginy: 0
+        imgWidth: 192
+        imgHeight: 192
+        width: 192
+        height: 192
+        offx: 0
+        offy: 0
+        origname: i6fh3wTJz3HtHg2.png
+        shape: circle
+        left: 96
+        right: 96
+        top: 96
+        bottom: 96
+        uid: 6fh3wTJz3HtHg2
+        padding: 1
+        isBlank: false
+        source: >-
+          C:\Users\User\Documents\GitHub\ludum-dare-58\Collector\Assets\bird_C.png
+        r: 96
+      - lastmod: 1759596654276
+        type: texture
+        name: bird_A
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 32
+          - 32
+        marginx: 0
+        marginy: 0
+        imgWidth: 64
+        imgHeight: 64
+        width: 64
+        height: 64
+        offx: 0
+        offy: 0
+        origname: iCLqtnbmKTFqcwc.png
+        shape: circle
+        left: 32
+        right: 32
+        top: 32
+        bottom: 32
+        uid: CLqtnbmKTFqcwc
+        padding: 1
+        isBlank: false
+        source: >-
+          C:\Users\User\Documents\GitHub\ludum-dare-58\Collector\Assets\bird_A.png
+        r: 32
+      - lastmod: 1759596662821
+        type: texture
+        name: bird_B
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 64
+          - 64
+        marginx: 0
+        marginy: 0
+        imgWidth: 128
+        imgHeight: 128
+        width: 128
+        height: 128
+        offx: 0
+        offy: 0
+        origname: iqhCkr9pFgjJLqL.png
+        shape: circle
+        left: 64
+        right: 64
+        top: 64
+        bottom: 64
+        uid: qhCkr9pFgjJLqL
+        padding: 1
+        isBlank: false
+        source: >-
+          C:\Users\User\Documents\GitHub\ludum-dare-58\Collector\Assets\bird_B.png
+        r: 64
+      - lastmod: 1759598978446
+        type: texture
+        name: bird_A_2
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 0
+          - 0
+        marginx: 0
+        marginy: 0
+        imgWidth: 64
+        imgHeight: 64
+        width: 64
+        height: 64
+        offx: 0
+        offy: 0
+        origname: ickkCGgLQTDpzjQ.png
+        shape: rect
+        left: 0
+        right: 64
+        top: 0
+        bottom: 64
+        uid: ckkCGgLQTDpzjQ
+        padding: 1
+        isBlank: false
+        source: >-
+          C:\Users\User\Documents\GitHub\ludum-dare-58\Collector\Assets\bird_A.png
+      - lastmod: 1759605831017
+        type: texture
+        name: treeSpot
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 8
+          - 8
+        marginx: 0
+        marginy: 0
+        imgWidth: 16
+        imgHeight: 16
+        width: 16
+        height: 16
+        offx: 0
+        offy: 0
+        origname: i3k1H1q97FLTFrW.png
+        shape: rect
+        left: 8
+        right: 8
+        top: 8
+        bottom: 8
+        uid: 3k1H1q97FLTFrW
+        padding: 1
+        isBlank: false
+        source: >-
+          C:\Users\User\Documents\GitHub\ludum-dare-58\Collector\Assets\treeSpot.png
+  - lastmod: 1759594274087
+    type: texture
+    name: photo_bkg
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 0
+      - 0
+    marginx: 0
+    marginy: 0
+    imgWidth: 1920
+    imgHeight: 1080
+    width: 1920
+    height: 1080
+    offx: 0
+    offy: 0
+    origname: iwwr2zMrqjbwFb9.png
+    shape: rect
+    left: 0
+    right: 1920
+    top: 0
+    bottom: 1080
+    uid: wwr2zMrqjbwFb9
+    padding: 0
+    isBlank: false
+    source: 'C:\Users\User\Documents\GitHub\ludum-dare-58\Reference\photo_bkg.jpg'
+    tiled: true
+  - type: folder
+    uid: 7MGK85gGf2PfkJ
+    colorClass: success
+    icon: music
+    name: Sounds
+    lastmod: 1759596068845
+    entries:
+      - name: New Sound
+        uid: DzG79JPFc3pp2j
+        type: sound
+        lastmod: 1759596884047
+        preload: true
+        variants:
+          - uid: R6Wd5QPzRFd9JF
+            source: 'C:\Users\User\AppData\Local\Temp\ctjs-KzOIvr\recording.mp3'
+        distortion:
+          enabled: false
+          min: 0
+          max: 1
+        pitch:
+          enabled: false
+          min: 0
+          max: 1
+        reverb:
+          enabled: false
+          decayMin: 2
+          decayMax: 2
+          secondsMin: 2
+          secondsMax: 3
+          reverse: false
+        volume:
+          enabled: false
+          min: 0
+          max: 1
+        eq:
+          enabled: false
+          bands:
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+        panning:
+          refDistance: 0.5
+          rolloffFactor: 1
+      - name: s1
+        uid: 2n32prWLKBfkk6
+        type: sound
+        lastmod: 1759597393809
+        preload: true
+        variants:
+          - uid: jgdtCt62jNqkdK
+            source: 'C:\Users\User\AppData\Local\Temp\ctjs-Wa4dQy\recording.mp3'
+        distortion:
+          enabled: false
+          min: 0
+          max: 1
+        pitch:
+          enabled: false
+          min: 0
+          max: 1
+        reverb:
+          enabled: false
+          decayMin: 2
+          decayMax: 2
+          secondsMin: 2
+          secondsMax: 3
+          reverse: false
+        volume:
+          enabled: false
+          min: 0
+          max: 1
+        eq:
+          enabled: false
+          bands:
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+        panning:
+          refDistance: 0.5
+          rolloffFactor: 1
+  - type: behavior
+    name: MainBehavior
+    behaviorType: room
+    events:
+      - eventKey: OnRoomStart
+        code: 'this.treeSpots = templates.list[''TreeSpot''].length'
+        arguments: {}
+        lib: core
+    specification:
+      - structure: atomic
+        type: number
+        mappedType: number
+        name: treeSpots
+        readableName: treeSpots
+        required: false
+        fixedLength: 0
+    extendTypes: ''
+    lastmod: 1759654190828
+    uid: Nrn5N9Jf19FjQC
+  - uid: FtKjmtzMCkcWHD
+    name: Globals
+    code: >-
+      // NOTE: we need to attach the functions to a SCOPE if we want to have
+      them globally available.
+
+      //       Else, functions will be "private" for this script
+
+
+      // Rand index among treespots
+
+      function randSpotIndex() {
+
+      return Math.floor(Math.random() * rooms.current.treeSpots);
+
+      }
+
+
+      // Pick target coords
+
+      globalThis.nextSpot = function(lastX: number, lastY: number) : number[] {
+
+      var spotTemplates = templates.list['TreeSpot'];
+
+      if (spotTemplates.length === 0) {
+          // No templates, keep current position as spot
+          return [ lastX, lastY ];
+      } else {
+          // Look for next spot
+          let nextIndex: number, nextSpotX: number, nextSpotY: number;
+          do {
+          nextIndex = randSpotIndex();
+          const spot = spotTemplates[nextIndex];
+          nextSpotX = spot.position.x;
+          nextSpotY = spot.position.y;
+          } while (nextSpotX === lastX && nextSpotY === lastY)
+          return [ nextSpotX, nextSpotY ]
+      }
+
+      }
+    language: typescript
+    variables: []
+    runAutomatically: true
+    lastmod: 1759654869956
+    type: script
 globalVars: []
 settings:
   authoring:
@@ -120,3 +695,4 @@ settings:
     alternativeLogo: false
     customLoadingText: ''
   fps: 30
+palette: []
