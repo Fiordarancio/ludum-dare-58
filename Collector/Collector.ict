@@ -47,20 +47,8 @@ assets:
         movementY: 0
         scaleX: 1
         scaleY: 1
-        repeat: repeat
+        repeat: no-repeat
     copies:
-      - x: -704
-        'y': -320
-        opacity: 1
-        tint: 16777215
-        scale:
-          x: 1
-          'y': 1
-        rotation: 0
-        uid: WPcLqW4147Ft77
-        exts: {}
-        customProperties: {}
-        bindings: {}
       - x: 320
         'y': 384
         opacity: 1
@@ -111,9 +99,9 @@ assets:
         bindings: {}
     tiles: []
     extends:
-      treeSpots: []
+      treeSpots: 0
       treeSpotPosX: {}
-    lastmod: 1759654193809
+    lastmod: 1759656197927
     events: []
     behaviors:
       - Nrn5N9Jf19FjQC
@@ -143,14 +131,14 @@ assets:
               const shouldStop = u.distance(this, target) < 10;
               if (shouldStop) {
                   // Move directly to next spot position
-                  this.position = target
-                  console.log("Stopping at [${this.position.x},${this.position.y}]")
+                  this.position = target;
+                  console.log(`Stopping at [${this.position.x},${this.position.y}]`);
                   // Pick next spot and get direction
-                  var spot = globalThis.nextSpot(target.x, target.y)
-                  this.targetSpotX = spot[0]
-                  this.targetSpotY = spot[1]
+                  var spot = globalThis.nextSpot(target.x, target.y);
+                  this.targetSpotX = spot[0];
+                  this.targetSpotY = spot[1];
                   // Get direction
-                  this.direction = u.direction(this, {x: this.targetSpotX, y:this.targetSpotY})
+                  this.direction = u.direction(this, {x: this.targetSpotX, y:this.targetSpotY});
               }
 
               this.move()
@@ -158,13 +146,17 @@ assets:
             lib: core
           - eventKey: OnCreate
             code: >
-              this.speed = 60
+              this.speed = 100
 
 
               // Set direction to next spot
 
+              console.log(`This bird's next spot is: `)
+
               this.direction = u.direction(this, {x: this.targetSpotX, y:
-              this.targetSpotY})
+              this.targetSpotY});
+
+              console.log(`This bird's direction is: ${this.direction}`)
             arguments: {}
             lib: core
         extends:
@@ -176,7 +168,7 @@ assets:
           targetSpot:
             x: 0
             'y': 0
-        lastmod: 1759654185935
+        lastmod: 1759655366473
         uid: nL5WjpR1g2nCMF
         behaviors:
           - tL8L74bG19RKmN
@@ -247,12 +239,8 @@ assets:
         events:
           - eventKey: OnCreate
             code: >-
-              const initialTarget = globalThis.nextSpot(this.position.x,
-              this.position.y)
-
-              this.targetSpotX = initialTarget[0]
-
-              this.targetSpotY = initialTarget[1]
+              console.log("Values of TargetSpot must have set in the parent
+              template!")
             arguments: {}
             lib: core
         specification:
@@ -271,7 +259,7 @@ assets:
             required: false
             fixedLength: 0
         extendTypes: ''
-        lastmod: 1759654188961
+        lastmod: 1759656197729
         uid: Lf6MPhwNkFM9Gq
   - type: folder
     uid: pkjrtnLhC9NBrD
@@ -582,7 +570,9 @@ assets:
     behaviorType: room
     events:
       - eventKey: OnRoomStart
-        code: 'this.treeSpots = templates.list[''TreeSpot''].length'
+        code: |-
+          this.treeSpots = templates.list['TreeSpot'].length
+          globalThis.listOfSpots()
         arguments: {}
         lib: core
     specification:
@@ -594,7 +584,7 @@ assets:
         required: false
         fixedLength: 0
     extendTypes: ''
-    lastmod: 1759654190828
+    lastmod: 1759655414045
     uid: Nrn5N9Jf19FjQC
   - uid: FtKjmtzMCkcWHD
     name: Globals
@@ -608,38 +598,46 @@ assets:
       // Rand index among treespots
 
       function randSpotIndex() {
-
-      return Math.floor(Math.random() * rooms.current.treeSpots);
-
+          return Math.floor(Math.random() * rooms.current.treeSpots);
       }
 
 
       // Pick target coords
 
       globalThis.nextSpot = function(lastX: number, lastY: number) : number[] {
-
-      var spotTemplates = templates.list['TreeSpot'];
-
-      if (spotTemplates.length === 0) {
-          // No templates, keep current position as spot
-          return [ lastX, lastY ];
-      } else {
-          // Look for next spot
-          let nextIndex: number, nextSpotX: number, nextSpotY: number;
-          do {
-          nextIndex = randSpotIndex();
-          const spot = spotTemplates[nextIndex];
-          nextSpotX = spot.position.x;
-          nextSpotY = spot.position.y;
-          } while (nextSpotX === lastX && nextSpotY === lastY)
-          return [ nextSpotX, nextSpotY ]
+          var spotTemplates = templates.list['TreeSpot'];
+          if (spotTemplates.length === 0) {
+              // No templates, keep current position as spot
+              return [ lastX, lastY ];
+          } else {
+              // Look for next spot
+              let nextIndex: number, nextSpotX: number, nextSpotY: number;
+              do {
+              nextIndex = randSpotIndex();
+              const spot = spotTemplates[nextIndex];
+              nextSpotX = spot.position.x;
+              nextSpotY = spot.position.y;
+              } while (nextSpotX === lastX && nextSpotY === lastY)
+              return [ nextSpotX, nextSpotY ]
+          }
       }
 
+
+      //  Just print list of spots for debug
+
+      globalThis.listOfSpots = function() {
+          var spotTemplates = templates.list['TreeSpot'];
+          if (spotTemplates.length === 0)
+              console.log("No templates D:")
+          else {
+              const log = spotTemplates.map (spot => `[${spot.position.x}, ${spot.position.y}]; `)
+              console.log(`List of spots: ${log}`)
+          }
       }
     language: typescript
     variables: []
     runAutomatically: true
-    lastmod: 1759654869956
+    lastmod: 1759655582524
     type: script
 globalVars: []
 settings:
