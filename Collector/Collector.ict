@@ -79,6 +79,35 @@ scripts:
 
           return newLen;
       }
+  - name: spotFuncs
+    code: |-
+      /* Use scripts to define frequent functions and import small libraries */
+
+      // Pick target coords
+      function nextTreeSpot(lastX: number, lastY: number) : number[] {
+          var spotTemplates = templates.list['TreeSpot'];
+          if (spotTemplates.length === 0) {
+              // No templates, keep current position as spot
+              return [ lastX, lastY ];
+          } else {
+              // Look for next spot
+              let nextIndex: number, nextSpotX: number, nextSpotY: number;
+              do {
+                  nextIndex = randIndex(spotTemplates.length);
+                  const spot = spotTemplates[nextIndex];
+                  nextSpotX = spot.position.x;
+                  nextSpotY = spot.position.y;
+              } while (nextSpotX === lastX && nextSpotY === lastY)
+              return [ nextSpotX, nextSpotY ]
+          }
+      }
+  - name: utils
+    code: |-
+      /* Use scripts to define frequent functions and import small libraries */
+
+      function randIndex(max: number = 1) {
+          return Math.floor(Math.random() * max);
+      }
 assets:
   - type: room
     oncreate: ''
@@ -114,44 +143,32 @@ assets:
         scaleY: 1
         repeat: no-repeat
     copies:
-      - x: -704
-        'y': -320
-        opacity: 1
-        tint: 16777215
-        scale:
-          x: 1
-          'y': 1
-        rotation: 0
-        uid: WPcLqW4147Ft77
-        exts: {}
-        customProperties: {}
-        bindings: {}
       - x: 320
+        'y': 320
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: WPcLqW4147Ft77
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 1088
+        'y': 704
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: WPcLqW4147Ft77
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 1792
         'y': 384
-        opacity: 1
-        tint: 16777215
-        scale:
-          x: 1
-          'y': 1
-        rotation: 0
-        uid: WPcLqW4147Ft77
-        exts: {}
-        customProperties: {}
-        bindings: {}
-      - x: 960
-        'y': 768
-        opacity: 1
-        tint: 16777215
-        scale:
-          x: 1
-          'y': 1
-        rotation: 0
-        uid: WPcLqW4147Ft77
-        exts: {}
-        customProperties: {}
-        bindings: {}
-      - x: 1728
-        'y': 640
         opacity: 1
         tint: 16777215
         scale:
@@ -186,14 +203,186 @@ assets:
         exts: {}
         customProperties: {}
         bindings: {}
+      - x: 128
+        'y': 768
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: WPcLqW4147Ft77
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 576
+        'y': 640
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: WPcLqW4147Ft77
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 1664
+        'y': 64
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: WPcLqW4147Ft77
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: -64
+        'y': 576
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: WPcLqW4147Ft77
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 2048
+        'y': 576
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: WPcLqW4147Ft77
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 512
+        'y': 896
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 16Pp9Bw4hmFhwR
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 832
+        'y': 896
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 16Pp9Bw4hmFhwR
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 1600
+        'y': 896
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 16Pp9Bw4hmFhwR
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 1344
+        'y': 896
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 16Pp9Bw4hmFhwR
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 1088
+        'y': 896
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 16Pp9Bw4hmFhwR
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 1728
+        'y': 832
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: WPcLqW4147Ft77
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 256
+        'y': 64
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: nL5WjpR1g2nCMF
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 320
+        'y': 704
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: nL5WjpR1g2nCMF
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 1856
+        'y': 704
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: nL5WjpR1g2nCMF
+        exts: {}
+        customProperties: {}
+        bindings: {}
     tiles: []
     extends:
       treeSpots: 0
       treeSpotPosX: {}
-    lastmod: 1759663437607
+      validCombos:
+        bird_A: WASD
+        bird_B: DSAW
+        bird_C: ASDW
+        bird_D: WSSA
+    lastmod: 1759678646609
     events: []
-    behaviors:
-      - Nrn5N9Jf19FjQC
+    behaviors: []
     extendTypes: ''
     uid: 6ntH8Rg2zmgMMK
   - type: folder
@@ -205,7 +394,7 @@ assets:
     entries:
       - type: template
         baseClass: AnimatedSprite
-        name: BackBird_A
+        name: Bird_A
         depth: 0
         texture: CLqtnbmKTFqcwc
         playAnimationOnStart: false
@@ -215,19 +404,30 @@ assets:
         events:
           - eventKey: OnDraw
             code: |-
-              // Check next position is occupied
-              const target = { x: this.targetSpotX, y: this.targetSpotY};
-              const shouldStop = u.distance(this, target) < 10;
-              if (shouldStop) {
-                  // Move directly to next spot position
-                  this.position = target
-                  console.log("Stopping at [${this.position.x},${this.position.y}]")
-                  // Pick next spot and get direction
-                  var spot = globalThis.nextSpot(target.x, target.y)
-                  this.targetSpotX = spot[0]
-                  this.targetSpotY = spot[1]
-                  // Get direction
-                  this.direction = u.direction(this, {x: this.targetSpotX, y:this.targetSpotY})
+              // While flying, check if we reach a treeSpot or photoSpot
+              if (this.speed != 0) {
+                  // Check if we arrived to target spot
+                  const target = { x: this.targetSpotX, y: this.targetSpotY};
+                  const shouldStop = u.distance(this, target) < 10;
+                  if (shouldStop) {
+                      // Move directly to target position
+                      this.position = target;
+                      // Stop if on photoTarget and wait
+                      if (this.isPhotoTarget) {
+                          this.speed = 0;
+                          // Wait seconds
+                          this.timer1 = this.photoSeconds;
+                          // Put on cool sprite
+                      }
+                      else { // Continue flying
+                          // Pick next spot and get direction
+                          var spot = nextTreeSpot(target.x, target.y);
+                          this.targetSpotX = spot[0];
+                          this.targetSpotY = spot[1];
+                          // Get direction
+                          this.direction = u.direction(this, {x: this.targetSpotX, y:this.targetSpotY});
+                      }
+                  }
               }
 
               this.move()
@@ -235,14 +435,43 @@ assets:
             lib: core
           - eventKey: OnCreate
             code: >
-              this.speed = 60
+              this.speed = 120
 
 
-              // Set direction to next spot
+              // Initial spot and direction
 
-              this.direction = u.direction(this, {x: this.targetSpotX, y:
-              this.targetSpotY})
+              const firstSpot = nextTreeSpot(this.position.x, this.position.y);
+
+              this.targetSpotX = firstSpot[0];
+
+              this.targetSpotY = firstSpot[1];
+
+              this.direction = u.direction(this, {x: this.targetSpotX,
+              y:this.targetSpotY})
             arguments: {}
+            lib: core
+          - eventKey: Timer1
+            code: >
+              console.log("Returning to fly");
+
+              this.isOnPhotoSpot = false;
+
+
+              // Pick next spot and get direction
+
+              var spot = nextTreeSpot(this.position.x, this.position.y);
+
+              this.targetSpotX = spot[0];
+
+              this.targetSpotY = spot[1];
+
+              // Get direction
+
+              this.direction = u.direction(this, {x: this.targetSpotX,
+              y:this.targetSpotY});
+            arguments:
+              name: Photo end
+              isUi: false
             lib: core
         extends:
           cgroup: Bird
@@ -253,7 +482,9 @@ assets:
           targetSpot:
             x: 0
             'y': 0
-        lastmod: 1759654185935
+          isOnPhotoSpot: false
+          photoSeconds: 3
+        lastmod: 1759679987823
         uid: nL5WjpR1g2nCMF
         behaviors:
           - tL8L74bG19RKmN
@@ -266,16 +497,18 @@ assets:
           - eventKey: OnPointerEnter
             code: |-
               if (!this.isPlayerPointing) {
-                  this.isPlayerPointing = true
-                  sounds.fade(this.birdSound, 1, 1000)
+                  this.isPlayerPointing = true;
+                  sounds.play(this.birdSound, { volume: 0.1, loop: true });
+                  // sounds.fade(this.birdSound, 1, 250); // non funge :(
               }
             arguments: {}
             lib: core
           - eventKey: OnPointerLeave
             code: |-
               if (this.isPlayerPointing) {
-                  this.isPlayerPointing = false
-                  sounds.fade(this.birdSound, 1, 1000)
+                  this.isPlayerPointing = false;
+                  // sounds.fade(this.birdSound, 0, 250); // non funge :(
+                  sounds.stop(this.birdSound);
               }
             arguments: {}
             lib: core
@@ -295,7 +528,7 @@ assets:
             required: true
             fixedLength: 0
         extendTypes: ''
-        lastmod: 1759598281220
+        lastmod: 1759680260056
         uid: tL8L74bG19RKmN
       - type: template
         baseClass: AnimatedSprite
@@ -306,32 +539,17 @@ assets:
         loopAnimation: true
         animationFPS: 30
         visible: true
-        events:
-          - eventKey: collisionTemplate
-            code: console.log("Collided with bird!")
-            arguments:
-              template: nL5WjpR1g2nCMF
-            lib: place
+        events: []
         extends:
           cgroup: TreeSpot
-        lastmod: 1759654234332
+        lastmod: 1759678491175
         uid: WPcLqW4147Ft77
         behaviors: []
         extendTypes: ''
       - type: behavior
         name: TargetSpot
         behaviorType: template
-        events:
-          - eventKey: OnCreate
-            code: >-
-              const initialTarget = globalThis.nextSpot(this.position.x,
-              this.position.y)
-
-              this.targetSpotX = initialTarget[0]
-
-              this.targetSpotY = initialTarget[1]
-            arguments: {}
-            lib: core
+        events: []
         specification:
           - structure: atomic
             type: number
@@ -347,9 +565,39 @@ assets:
             readableName: targetSpotY
             required: false
             fixedLength: 0
+          - structure: atomic
+            type: checkbox
+            mappedType: number
+            name: isOnPhotoSpot
+            readableName: isOnPhotoSpot
+            required: false
+            fixedLength: 0
+          - structure: atomic
+            type: number
+            mappedType: number
+            name: photoSeconds
+            readableName: photoSeconds
+            required: false
+            fixedLength: 0
         extendTypes: ''
-        lastmod: 1759654188961
+        lastmod: 1759678718640
         uid: Lf6MPhwNkFM9Gq
+      - type: template
+        baseClass: AnimatedSprite
+        name: PhotoSpot
+        depth: 0
+        texture: qJk3JzTmGNCRWj
+        playAnimationOnStart: false
+        loopAnimation: true
+        animationFPS: 30
+        visible: true
+        events: []
+        extends:
+          cgroup: ''
+        lastmod: 1759678535123
+        uid: 16Pp9Bw4hmFhwR
+        behaviors: []
+        extendTypes: ''
   - type: folder
     uid: pkjrtnLhC9NBrD
     colorClass: text
@@ -619,6 +867,35 @@ assets:
         padding: 1
         isBlank: false
         source: /home/avenger/GitHub/adettori/ludum-dare-58/Collector/Assets/dpad.png
+      - lastmod: 1759678520599
+        type: texture
+        name: photoSpot
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 8
+          - 8
+        marginx: 0
+        marginy: 0
+        imgWidth: 16
+        imgHeight: 16
+        width: 16
+        height: 16
+        offx: 0
+        offy: 0
+        origname: iqJk3JzTmGNCRWj.png
+        shape: rect
+        left: 8
+        right: 8
+        top: 8
+        bottom: 8
+        uid: qJk3JzTmGNCRWj
+        padding: 1
+        isBlank: false
+        source: >-
+          C:\Users\User\Documents\GitHub\ludum-dare-58\Collector\Assets\photoSpot.png
   - lastmod: 1759594274087
     type: texture
     name: photo_bkg
@@ -996,70 +1273,6 @@ assets:
             panning:
               refDistance: 0.5
               rolloffFactor: 1
-  - type: behavior
-    name: MainBehavior
-    behaviorType: room
-    events:
-      - eventKey: OnRoomStart
-        code: 'this.treeSpots = templates.list[''TreeSpot''].length'
-        arguments: {}
-        lib: core
-    specification:
-      - structure: atomic
-        type: number
-        mappedType: number
-        name: treeSpots
-        readableName: treeSpots
-        required: false
-        fixedLength: 0
-    extendTypes: ''
-    lastmod: 1759666848581
-    uid: Nrn5N9Jf19FjQC
-  - uid: FtKjmtzMCkcWHD
-    name: Globals
-    code: >-
-      // NOTE: we need to attach the functions to a SCOPE if we want to have
-      them globally available.
-
-      //       Else, functions will be "private" for this script
-
-
-      // Rand index among treespots
-
-      function randSpotIndex() {
-
-      return Math.floor(Math.random() * rooms.current.treeSpots);
-
-      }
-
-
-      // Pick target coords
-
-      globalThis.nextSpot = function(lastX: number, lastY: number) : number[] {
-
-      var spotTemplates = templates.list['TreeSpot'];
-
-      if (spotTemplates.length === 0) {
-          // No templates, keep current position as spot
-          return [ lastX, lastY ];
-      } else {
-          // Look for next spot
-          let nextIndex: number, nextSpotX: number, nextSpotY: number;
-          do {
-          nextIndex = randSpotIndex();
-          const spot = spotTemplates[nextIndex];
-          nextSpotX = spot.position.x;
-          nextSpotY = spot.position.y;
-          } while (nextSpotX === lastX && nextSpotY === lastY)
-          return [ nextSpotX, nextSpotY ]
-      }
-
-      }
-    language: typescript
-    variables: []
-    runAutomatically: true
-    lastmod: 1759654869956
-    type: script
 globalVars: []
 settings:
   authoring:
