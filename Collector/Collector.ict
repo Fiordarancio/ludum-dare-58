@@ -53,16 +53,19 @@ scripts:
               sounds.play(combo_id + "-sound"); // Assemble sound name
               newLen++
 
+              if(timer.timers.size > 0) {
+                  timer.timers.forEach((tim) => {
+                      if(tim.name.includes("combo_timer"))
+                          timer.timers.delete(tim);
+                  })
+              }
+
               // If combo is full, empty it
               if(newLen == combo_max_len) {
                   u.wait(800); // Wait before allowing more combos
                   combo_array.length = 0;
               } else {
                   // Setup timer
-                  if(timer.timers.size > 0) {
-                      timer.timers.clear();
-                  }
-
                   var cur_timer = timer.addUi(2000, "combo_timer");
                   cur_timer.then(() => {
                       if(!cur_timer.rejected) {
