@@ -78,20 +78,8 @@ assets:
         movementY: 0
         scaleX: 1
         scaleY: 1
-        repeat: repeat
+        repeat: no-repeat
     copies:
-      - x: -704
-        'y': -320
-        opacity: 1
-        tint: 16777215
-        scale:
-          x: 1
-          'y': 1
-        rotation: 0
-        uid: WPcLqW4147Ft77
-        exts: {}
-        customProperties: {}
-        bindings: {}
       - x: 320
         'y': 384
         opacity: 1
@@ -156,7 +144,7 @@ assets:
     extends:
       treeSpots: 0
       treeSpotPosX: {}
-    lastmod: 1759663126469
+    lastmod: 1759667215364
     events: []
     behaviors:
       - Nrn5N9Jf19FjQC
@@ -181,34 +169,66 @@ assets:
         events:
           - eventKey: OnDraw
             code: |-
-              // Check next position is occupied
-              const target = { x: this.targetSpotX, y: this.targetSpotY};
-              const shouldStop = u.distance(this, target) < 10;
-              if (shouldStop) {
-                  // Move directly to next spot position
-                  this.position = target
-                  console.log("Stopping at [${this.position.x},${this.position.y}]")
-                  // Pick next spot and get direction
-                  var spot = globalThis.nextSpot(target.x, target.y)
-                  this.targetSpotX = spot[0]
-                  this.targetSpotY = spot[1]
-                  // Get direction
-                  this.direction = u.direction(this, {x: this.targetSpotX, y:this.targetSpotY})
+              // While flying, check if we reach a treeSpot or photoSpot
+              if (this.speed != 0) {
+                  // Check if we arrived to target spot
+                  const target = { x: this.targetSpotX, y: this.targetSpotY};
+                  const shouldStop = u.distance(this, target) < 10;
+                  if (shouldStop) {
+                      // Move directly to target position
+                      this.position = target;
+                      // Stop if on photoTarget and wait
+                      if (this.isPhotoTarget) {
+                          this.speed = 0;
+                          // Wait seconds
+                          this.timer1 = this.photoSeconds;
+                          // Put on cool sprite
+                      }
+                      else { // Continue flying
+                          // Pick next spot and get direction
+                          var spot = globalThis.nextSpot(target.x, target.y);
+                          this.targetSpotX = spot[0];
+                          this.targetSpotY = spot[1];
+                          // Get direction
+                          this.direction = u.direction(this, {x: this.targetSpotX, y:this.targetSpotY});
+                      }
+                  }
               }
 
               this.move()
             arguments: {}
             lib: core
           - eventKey: OnCreate
-            code: >
-              this.speed = 60
+            code: >-
+              this.speed = 150
 
 
-              // Set direction to next spot
+              // Initial spot and direction
+
+              const firstSpot = globalThis.nextSpot(this.position.x,
+              this.position.y);
+
+              this.targetSpotX = firstSpot[0];
+
+              this.targetSpotY = firstSpot[1];
+
 
               this.direction = u.direction(this, {x: this.targetSpotX, y:
-              this.targetSpotY})
+              this.targetSpotY});
+
+
+              // Reset timer
+
+              this.timer1 = 0;
             arguments: {}
+            lib: core
+          - eventKey: Timer1
+            code: |-
+              this.timer1 = 1; // Reacharge timer
+              console.log("Fire");
+            arguments:
+              name: Photo end
+              isUi: false
             lib: core
         extends:
           cgroup: Bird
@@ -219,7 +239,7 @@ assets:
           targetSpot:
             x: 0
             'y': 0
-        lastmod: 1759654185935
+        lastmod: 1759666824356
         uid: nL5WjpR1g2nCMF
         behaviors:
           - tL8L74bG19RKmN
@@ -232,17 +252,25 @@ assets:
           - eventKey: OnPointerEnter
             code: |-
               if (!this.isPlayerPointing) {
-                  this.isPlayerPointing = true
-                  sounds.fade(this.birdSound, 1, 1000)
+                  this.isPlayerPointing = true;
+                  sounds.fade(this.birdSound, 1, 250);
               }
             arguments: {}
             lib: core
           - eventKey: OnPointerLeave
             code: |-
               if (this.isPlayerPointing) {
-                  this.isPlayerPointing = false
-                  sounds.fade(this.birdSound, 1, 1000)
+                  this.isPlayerPointing = false;
+                  sounds.fade(this.birdSound, 0, 250);
               }
+            arguments: {}
+            lib: core
+          - eventKey: OnCreate
+            code: 'sounds.play(this.birdSound, { volume: 0});'
+            arguments: {}
+            lib: core
+          - eventKey: OnDestroy
+            code: sounds.stop(this.birdSound);
             arguments: {}
             lib: core
         specification:
@@ -261,7 +289,7 @@ assets:
             required: true
             fixedLength: 0
         extendTypes: ''
-        lastmod: 1759598281220
+        lastmod: 1759666945344
         uid: tL8L74bG19RKmN
       - type: template
         baseClass: AnimatedSprite
@@ -272,32 +300,17 @@ assets:
         loopAnimation: true
         animationFPS: 30
         visible: true
-        events:
-          - eventKey: collisionTemplate
-            code: console.log("Collided with bird!")
-            arguments:
-              template: nL5WjpR1g2nCMF
-            lib: place
+        events: []
         extends:
           cgroup: TreeSpot
-        lastmod: 1759654234332
+        lastmod: 1759666953575
         uid: WPcLqW4147Ft77
         behaviors: []
         extendTypes: ''
       - type: behavior
         name: TargetSpot
         behaviorType: template
-        events:
-          - eventKey: OnCreate
-            code: >-
-              const initialTarget = globalThis.nextSpot(this.position.x,
-              this.position.y)
-
-              this.targetSpotX = initialTarget[0]
-
-              this.targetSpotY = initialTarget[1]
-            arguments: {}
-            lib: core
+        events: []
         specification:
           - structure: atomic
             type: number
@@ -313,8 +326,22 @@ assets:
             readableName: targetSpotY
             required: false
             fixedLength: 0
+          - structure: atomic
+            type: checkbox
+            mappedType: number
+            name: isPhotoTarget
+            readableName: isPhotoTarget
+            required: false
+            fixedLength: 0
+          - structure: atomic
+            type: number
+            mappedType: number
+            name: photoSeconds
+            readableName: photoSeconds
+            required: true
+            fixedLength: 0
         extendTypes: ''
-        lastmod: 1759654188961
+        lastmod: 1759666871439
         uid: Lf6MPhwNkFM9Gq
   - type: folder
     uid: pkjrtnLhC9NBrD
@@ -938,50 +965,57 @@ assets:
     extendTypes: ''
     lastmod: 1759654190828
     uid: Nrn5N9Jf19FjQC
-  - uid: FtKjmtzMCkcWHD
+  - uid: cLzQpJBnK4TKBm
     name: Globals
     code: >-
-      // NOTE: we need to attach the functions to a SCOPE if we want to have
-      them globally available.
-
-      //       Else, functions will be "private" for this script
-
 
       // Rand index among treespots
 
       function randSpotIndex() {
-
-      return Math.floor(Math.random() * rooms.current.treeSpots);
-
+          return Math.floor(Math.random() * rooms.current.treeSpots);
       }
+
+
+      // NOTE: we need to attach the functions to a SCOPE if we want to have
+      them globally available. Else, functions will be "private" for this script
 
 
       // Pick target coords
 
       globalThis.nextSpot = function(lastX: number, lastY: number) : number[] {
-
-      var spotTemplates = templates.list['TreeSpot'];
-
-      if (spotTemplates.length === 0) {
-          // No templates, keep current position as spot
-          return [ lastX, lastY ];
-      } else {
-          // Look for next spot
-          let nextIndex: number, nextSpotX: number, nextSpotY: number;
-          do {
-          nextIndex = randSpotIndex();
-          const spot = spotTemplates[nextIndex];
-          nextSpotX = spot.position.x;
-          nextSpotY = spot.position.y;
-          } while (nextSpotX === lastX && nextSpotY === lastY)
-          return [ nextSpotX, nextSpotY ]
+          var spotTemplates = templates.list['TreeSpot'];
+          if (spotTemplates.length === 0) {
+              // No templates, keep current position as spot
+              return [ lastX, lastY ];
+          } else {
+              // Look for next spot
+              let nextIndex: number, nextSpotX: number, nextSpotY: number;
+              do {
+              nextIndex = randSpotIndex();
+              const spot = spotTemplates[nextIndex];
+              nextSpotX = spot.position.x;
+              nextSpotY = spot.position.y;
+              } while (nextSpotX === lastX && nextSpotY === lastY)
+              return [ nextSpotX, nextSpotY ]
+          }
       }
 
+
+      //  Just print list of spots for debug
+
+      globalThis.listOfSpots = function() {
+          var spotTemplates = templates.list['TreeSpot'];
+          if (spotTemplates.length === 0)
+              console.log("No templates D:")
+          else {
+              const log = spotTemplates.map (spot => `[${spot.position.x}, ${spot.position.y}]; `)
+              console.log(`List of spots: ${log}`)
+          }
       }
     language: typescript
     variables: []
     runAutomatically: true
-    lastmod: 1759654869956
+    lastmod: 1759667189521
     type: script
 globalVars: []
 settings:
