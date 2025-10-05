@@ -10,10 +10,41 @@ libs:
   keyboard: {}
   keyboard.polyfill: {}
   pointer.polyfill: {}
+  gamepad: {}
+  vkeys: {}
 startroom: -1
 contentTypes: []
-actions: []
-scripts: []
+actions:
+  - name: W
+    methods:
+      - code: keyboard.KeyW
+      - code: keyboard.ArrowUp
+  - name: A
+    methods:
+      - code: keyboard.KeyA
+      - code: keyboard.ArrowLeft
+  - name: S
+    methods:
+      - code: keyboard.KeyS
+      - code: keyboard.ArrowDown
+  - name: D
+    methods:
+      - code: keyboard.KeyD
+      - code: keyboard.ArrowRight
+scripts:
+  - name: New Script
+    code: |-
+      /* Use scripts to define frequent functions and import small libraries */
+
+      function exclusiveDpadPlay(name:string):void {    
+          var noSound = true;
+          var soundsList = ["w-sound", "a-sound", "s-sound", "d-sound"]
+
+          soundsList.forEach((sound) => noSound = (noSound && !sounds.playing(sound)));
+
+          if(noSound)
+              sounds.play(name);
+      }
 assets:
   - type: room
     oncreate: ''
@@ -47,8 +78,20 @@ assets:
         movementY: 0
         scaleX: 1
         scaleY: 1
-        repeat: no-repeat
+        repeat: repeat
     copies:
+      - x: -704
+        'y': -320
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: WPcLqW4147Ft77
+        exts: {}
+        customProperties: {}
+        bindings: {}
       - x: 320
         'y': 384
         opacity: 1
@@ -97,11 +140,23 @@ assets:
         exts: {}
         customProperties: {}
         bindings: {}
+      - x: 64
+        'y': 832
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 4Qw6bgfwpMH34J
+        exts: {}
+        customProperties: {}
+        bindings: {}
     tiles: []
     extends:
       treeSpots: 0
       treeSpotPosX: {}
-    lastmod: 1759656197927
+    lastmod: 1759663126469
     events: []
     behaviors:
       - Nrn5N9Jf19FjQC
@@ -131,14 +186,14 @@ assets:
               const shouldStop = u.distance(this, target) < 10;
               if (shouldStop) {
                   // Move directly to next spot position
-                  this.position = target;
-                  console.log(`Stopping at [${this.position.x},${this.position.y}]`);
+                  this.position = target
+                  console.log("Stopping at [${this.position.x},${this.position.y}]")
                   // Pick next spot and get direction
-                  var spot = globalThis.nextSpot(target.x, target.y);
-                  this.targetSpotX = spot[0];
-                  this.targetSpotY = spot[1];
+                  var spot = globalThis.nextSpot(target.x, target.y)
+                  this.targetSpotX = spot[0]
+                  this.targetSpotY = spot[1]
                   // Get direction
-                  this.direction = u.direction(this, {x: this.targetSpotX, y:this.targetSpotY});
+                  this.direction = u.direction(this, {x: this.targetSpotX, y:this.targetSpotY})
               }
 
               this.move()
@@ -146,17 +201,13 @@ assets:
             lib: core
           - eventKey: OnCreate
             code: >
-              this.speed = 100
+              this.speed = 60
 
 
               // Set direction to next spot
 
-              console.log(`This bird's next spot is: `)
-
               this.direction = u.direction(this, {x: this.targetSpotX, y:
-              this.targetSpotY});
-
-              console.log(`This bird's direction is: ${this.direction}`)
+              this.targetSpotY})
             arguments: {}
             lib: core
         extends:
@@ -168,7 +219,7 @@ assets:
           targetSpot:
             x: 0
             'y': 0
-        lastmod: 1759655366473
+        lastmod: 1759654185935
         uid: nL5WjpR1g2nCMF
         behaviors:
           - tL8L74bG19RKmN
@@ -239,8 +290,12 @@ assets:
         events:
           - eventKey: OnCreate
             code: >-
-              console.log("Values of TargetSpot must have set in the parent
-              template!")
+              const initialTarget = globalThis.nextSpot(this.position.x,
+              this.position.y)
+
+              this.targetSpotX = initialTarget[0]
+
+              this.targetSpotY = initialTarget[1]
             arguments: {}
             lib: core
         specification:
@@ -259,7 +314,7 @@ assets:
             required: false
             fixedLength: 0
         extendTypes: ''
-        lastmod: 1759656197729
+        lastmod: 1759654188961
         uid: Lf6MPhwNkFM9Gq
   - type: folder
     uid: pkjrtnLhC9NBrD
@@ -267,7 +322,43 @@ assets:
     icon: font
     name: UI
     lastmod: 1759590849422
-    entries: []
+    entries:
+      - type: template
+        baseClass: AnimatedSprite
+        name: Syllable-cross
+        depth: 0
+        texture: fFt5DLkG9zCLkh
+        playAnimationOnStart: false
+        loopAnimation: true
+        animationFPS: 30
+        visible: true
+        events:
+          - eventKey: OnActionPress
+            code: exclusiveDpadPlay("w-sound");
+            arguments:
+              action: W
+            lib: core
+          - eventKey: OnActionPress
+            code: exclusiveDpadPlay("a-sound");
+            arguments:
+              action: A
+            lib: core
+          - eventKey: OnActionPress
+            code: exclusiveDpadPlay("s-sound");
+            arguments:
+              action: S
+            lib: core
+          - eventKey: OnActionPress
+            code: exclusiveDpadPlay("d-sound");
+            arguments:
+              action: D
+            lib: core
+        extends:
+          cgroup: ''
+        lastmod: 1759663126470
+        uid: 4Qw6bgfwpMH34J
+        behaviors: []
+        extendTypes: ''
   - type: folder
     uid: 8Jq4pnK4hfffPM
     colorClass: warning
@@ -423,6 +514,34 @@ assets:
         isBlank: false
         source: >-
           C:\Users\User\Documents\GitHub\ludum-dare-58\Collector\Assets\treeSpot.png
+      - lastmod: 1759661073581
+        type: texture
+        name: dpad
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 0
+          - 0
+        marginx: 0
+        marginy: 0
+        imgWidth: 200
+        imgHeight: 200
+        width: 200
+        height: 200
+        offx: 0
+        offy: 0
+        origname: ifFt5DLkG9zCLkh.png
+        shape: rect
+        left: 0
+        right: 200
+        top: 0
+        bottom: 200
+        uid: fFt5DLkG9zCLkh
+        padding: 1
+        isBlank: false
+        source: /home/avenger/GitHub/adettori/ludum-dare-58/Collector/Assets/dpad.png
   - lastmod: 1759594274087
     type: texture
     name: photo_bkg
@@ -565,14 +684,247 @@ assets:
         panning:
           refDistance: 0.5
           rolloffFactor: 1
+      - type: folder
+        uid: 6jBHNDB16RwFGn
+        colorClass: act
+        icon: headphones
+        name: Syllables
+        lastmod: 1759660098208
+        entries:
+          - name: w-sound
+            uid: gw4CQCT3rJftgb
+            type: sound
+            lastmod: 1759659844379
+            preload: true
+            variants:
+              - uid: hh5tnHBLgKhnF2
+                source: /tmp/ctjs-vAVu7t/recording.mp3
+              - uid: MKzk8DG7pDDG83
+                source: /tmp/ctjs-4AmRDU/recording.mp3
+              - uid: RRfnGPTQFPC4LK
+                source: /tmp/ctjs-AAC1VS/recording.mp3
+            distortion:
+              enabled: false
+              min: 0
+              max: 1
+            pitch:
+              enabled: false
+              min: 0
+              max: 1
+            reverb:
+              enabled: false
+              decayMin: 2
+              decayMax: 2
+              secondsMin: 2
+              secondsMax: 3
+              reverse: false
+            volume:
+              enabled: false
+              min: 0
+              max: 1
+            eq:
+              enabled: false
+              bands:
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+            panning:
+              refDistance: 0.5
+              rolloffFactor: 1
+          - name: a-sound
+            uid: Bf3rtgB1TnL9f5
+            type: sound
+            lastmod: 1759659933401
+            preload: true
+            variants:
+              - uid: PfqwjCdcwJcWpP
+                source: /tmp/ctjs-WkHQmq/recording.mp3
+              - uid: HN15KF6BFN3zbC
+                source: /tmp/ctjs-j8xYed/recording.mp3
+              - uid: H9wLjFmfk7M56q
+                source: /tmp/ctjs-fMjg2E/recording.mp3
+            distortion:
+              enabled: false
+              min: 0
+              max: 1
+            pitch:
+              enabled: false
+              min: 0
+              max: 1
+            reverb:
+              enabled: false
+              decayMin: 2
+              decayMax: 2
+              secondsMin: 2
+              secondsMax: 3
+              reverse: false
+            volume:
+              enabled: false
+              min: 0
+              max: 1
+            eq:
+              enabled: false
+              bands:
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+            panning:
+              refDistance: 0.5
+              rolloffFactor: 1
+          - name: d-sound
+            uid: F7pdC8qNCgjp77
+            type: sound
+            lastmod: 1759660090651
+            preload: true
+            variants:
+              - uid: w4FRMknWr3hLRQ
+                source: /tmp/ctjs-ws35xy/recording.mp3
+              - uid: 7gM8JrD71W85pC
+                source: /tmp/ctjs-GhatmL/recording.mp3
+              - uid: KJ7qHkRh6q7TGJ
+                source: /tmp/ctjs-Uj6Sik/recording.mp3
+            distortion:
+              enabled: false
+              min: 0
+              max: 1
+            pitch:
+              enabled: false
+              min: 0
+              max: 1
+            reverb:
+              enabled: false
+              decayMin: 2
+              decayMax: 2
+              secondsMin: 2
+              secondsMax: 3
+              reverse: false
+            volume:
+              enabled: false
+              min: 0
+              max: 1
+            eq:
+              enabled: false
+              bands:
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+            panning:
+              refDistance: 0.5
+              rolloffFactor: 1
+          - name: s-sound
+            uid: 6b516R53qHPcT5
+            type: sound
+            lastmod: 1759660040191
+            preload: true
+            variants:
+              - uid: CtBg5HFGRCjRfN
+                source: /tmp/ctjs-haryeL/recording.mp3
+              - uid: C7zfMwcBCzzjRG
+                source: /tmp/ctjs-1WvSV8/recording.mp3
+              - uid: NPkfmBDD1TLt2F
+                source: /tmp/ctjs-cTIKuI/recording.mp3
+            distortion:
+              enabled: false
+              min: 0
+              max: 1
+            pitch:
+              enabled: false
+              min: 0
+              max: 1
+            reverb:
+              enabled: false
+              decayMin: 2
+              decayMax: 2
+              secondsMin: 2
+              secondsMax: 3
+              reverse: false
+            volume:
+              enabled: false
+              min: 0
+              max: 1
+            eq:
+              enabled: false
+              bands:
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+            panning:
+              refDistance: 0.5
+              rolloffFactor: 1
   - type: behavior
     name: MainBehavior
     behaviorType: room
     events:
       - eventKey: OnRoomStart
-        code: |-
-          this.treeSpots = templates.list['TreeSpot'].length
-          globalThis.listOfSpots()
+        code: 'this.treeSpots = templates.list[''TreeSpot''].length'
         arguments: {}
         lib: core
     specification:
@@ -584,7 +936,7 @@ assets:
         required: false
         fixedLength: 0
     extendTypes: ''
-    lastmod: 1759655414045
+    lastmod: 1759654190828
     uid: Nrn5N9Jf19FjQC
   - uid: FtKjmtzMCkcWHD
     name: Globals
@@ -598,46 +950,38 @@ assets:
       // Rand index among treespots
 
       function randSpotIndex() {
-          return Math.floor(Math.random() * rooms.current.treeSpots);
+
+      return Math.floor(Math.random() * rooms.current.treeSpots);
+
       }
 
 
       // Pick target coords
 
       globalThis.nextSpot = function(lastX: number, lastY: number) : number[] {
-          var spotTemplates = templates.list['TreeSpot'];
-          if (spotTemplates.length === 0) {
-              // No templates, keep current position as spot
-              return [ lastX, lastY ];
-          } else {
-              // Look for next spot
-              let nextIndex: number, nextSpotX: number, nextSpotY: number;
-              do {
-              nextIndex = randSpotIndex();
-              const spot = spotTemplates[nextIndex];
-              nextSpotX = spot.position.x;
-              nextSpotY = spot.position.y;
-              } while (nextSpotX === lastX && nextSpotY === lastY)
-              return [ nextSpotX, nextSpotY ]
-          }
+
+      var spotTemplates = templates.list['TreeSpot'];
+
+      if (spotTemplates.length === 0) {
+          // No templates, keep current position as spot
+          return [ lastX, lastY ];
+      } else {
+          // Look for next spot
+          let nextIndex: number, nextSpotX: number, nextSpotY: number;
+          do {
+          nextIndex = randSpotIndex();
+          const spot = spotTemplates[nextIndex];
+          nextSpotX = spot.position.x;
+          nextSpotY = spot.position.y;
+          } while (nextSpotX === lastX && nextSpotY === lastY)
+          return [ nextSpotX, nextSpotY ]
       }
 
-
-      //  Just print list of spots for debug
-
-      globalThis.listOfSpots = function() {
-          var spotTemplates = templates.list['TreeSpot'];
-          if (spotTemplates.length === 0)
-              console.log("No templates D:")
-          else {
-              const log = spotTemplates.map (spot => `[${spot.position.x}, ${spot.position.y}]; `)
-              console.log(`List of spots: ${log}`)
-          }
       }
     language: typescript
     variables: []
     runAutomatically: true
-    lastmod: 1759655582524
+    lastmod: 1759654869956
     type: script
 globalVars: []
 settings:
