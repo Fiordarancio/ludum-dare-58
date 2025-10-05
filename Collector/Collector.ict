@@ -32,18 +32,35 @@ actions:
       - code: keyboard.KeyD
       - code: keyboard.ArrowRight
 scripts:
-  - name: New Script
-    code: |-
+  - name: dpadFuncs
+    code: >-
       /* Use scripts to define frequent functions and import small libraries */
 
-      function exclusiveDpadPlay(name:string):void {    
-          var noSound = true;
+
+      function appendCombo(combo_id:string, combo_array:Array<string>,
+      combo_max_len:number):number {
+          var newLen = 0;
+          var noSoundPlaying = true;
+          // Lists of sounds to check
           var soundsList = ["w-sound", "a-sound", "s-sound", "d-sound"]
 
-          soundsList.forEach((sound) => noSound = (noSound && !sounds.playing(sound)));
+          // Check that nothing is playing
+          soundsList.forEach((sound) => noSoundPlaying = (noSoundPlaying && !sounds.playing(sound)));
 
-          if(noSound)
-              sounds.play(name);
+          // If combo is full, empty it
+          if(combo_array.length >= combo_max_len) {
+              u.wait(1000); // Wait before allowing more combos
+              combo_array.length = 0;
+          }
+
+          // If combo is not full, add new combo
+          if(noSoundPlaying) {
+              combo_array[combo_array.length] = combo_id;
+              sounds.play(combo_id + "-sound"); // Assemble sound name
+              newLen++
+          }
+
+          return newLen;
       }
 assets:
   - type: room
@@ -78,7 +95,7 @@ assets:
         movementY: 0
         scaleX: 1
         scaleY: 1
-        repeat: repeat
+        repeat: no-repeat
     copies:
       - x: -704
         'y': -320
@@ -156,7 +173,7 @@ assets:
     extends:
       treeSpots: 0
       treeSpotPosX: {}
-    lastmod: 1759663126469
+    lastmod: 1759663437607
     events: []
     behaviors:
       - Nrn5N9Jf19FjQC
@@ -325,40 +342,87 @@ assets:
     entries:
       - type: template
         baseClass: AnimatedSprite
-        name: Syllable-cross
+        name: dpad_template
         depth: 0
         texture: fFt5DLkG9zCLkh
         playAnimationOnStart: false
         loopAnimation: true
         animationFPS: 30
         visible: true
+        events: []
+        extends:
+          cgroup: ''
+          dpad_combo: []
+        lastmod: 1759668624413
+        uid: 4Qw6bgfwpMH34J
+        behaviors:
+          - dHtwh8wh7QdhrQ
+        extendTypes: ''
+      - type: behavior
+        name: dpad_behaviour
+        behaviorType: template
         events:
           - eventKey: OnActionPress
-            code: exclusiveDpadPlay("w-sound");
+            code: >-
+              this.dpad_combo_len = appendCombo("w", this.combo,
+              this.combo_max_len);
             arguments:
               action: W
             lib: core
           - eventKey: OnActionPress
-            code: exclusiveDpadPlay("a-sound");
+            code: >-
+              this.dpad_combo_len = appendCombo("a", this.combo,
+              this.combo_max_len);
             arguments:
               action: A
             lib: core
           - eventKey: OnActionPress
-            code: exclusiveDpadPlay("s-sound");
+            code: >-
+              this.dpad_combo_len = appendCombo("s", this.combo,
+              this.combo_max_len);
             arguments:
               action: S
             lib: core
           - eventKey: OnActionPress
-            code: exclusiveDpadPlay("d-sound");
+            code: >-
+              this.dpad_combo_len = appendCombo("d", this.combo,
+              this.combo_max_len);
             arguments:
               action: D
             lib: core
-        extends:
-          cgroup: ''
-        lastmod: 1759663126470
-        uid: 4Qw6bgfwpMH34J
-        behaviors: []
+          - eventKey: OnCreate
+            code: |-
+              // Init
+              this.combo = [];
+              this.combo_len = 0;
+              this.combo_max_len = 4;
+            arguments: {}
+            lib: core
+        specification:
+          - structure: array
+            type: textfield
+            mappedType: number
+            name: combo
+            readableName: Combo
+            required: true
+            fixedLength: 4
+          - structure: atomic
+            type: number
+            mappedType: number
+            name: combo_len
+            readableName: Combo Len
+            required: true
+            fixedLength: 0
+          - structure: atomic
+            type: number
+            mappedType: number
+            name: combo_max_len
+            readableName: Combo Max Len
+            required: true
+            fixedLength: 0
         extendTypes: ''
+        lastmod: 1759666679628
+        uid: dHtwh8wh7QdhrQ
   - type: folder
     uid: 8Jq4pnK4hfffPM
     colorClass: warning
@@ -936,7 +1000,7 @@ assets:
         required: false
         fixedLength: 0
     extendTypes: ''
-    lastmod: 1759654190828
+    lastmod: 1759666848581
     uid: Nrn5N9Jf19FjQC
   - uid: FtKjmtzMCkcWHD
     name: Globals
