@@ -1589,7 +1589,7 @@ assets:
             isBlank: false
             source: >-
               C:\Users\User\Documents\GitHub\ludum-dare-58\Assets\Card_Cuckoo.png
-      - lastmod: 1759785505542
+      - lastmod: 1759788664985
         type: texture
         name: ScreenHelp
         untill: 0
@@ -1673,7 +1673,7 @@ assets:
         padding: 1
         isBlank: false
         source: 'C:\Users\User\Documents\GitHub\ludum-dare-58\Assets\Art\GameIcon.png'
-      - lastmod: 1759785513682
+      - lastmod: 1759788676299
         type: texture
         name: ScreenCredits
         untill: 0
