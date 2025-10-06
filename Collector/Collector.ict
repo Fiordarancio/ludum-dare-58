@@ -208,7 +208,7 @@ assets:
             arguments: {}
             lib: core
           - eventKey: Timer1
-            code: >-
+            code: >
               console.log("Returning to fly");
 
               this.isOnPhotoSpot = false;
@@ -412,30 +412,22 @@ assets:
         behaviorType: template
         events:
           - eventKey: OnActionPress
-            code: >-
-              this.dpad_combo_len = appendCombo("w", this.combo,
-              this.combo_max_len);
+            code: 'appendCombo("w", this.combo, this.comboMaxLen);'
             arguments:
               action: W
             lib: core
           - eventKey: OnActionPress
-            code: >-
-              this.dpad_combo_len = appendCombo("a", this.combo,
-              this.combo_max_len);
+            code: 'appendCombo("a", this.combo, this.comboMaxLen);'
             arguments:
               action: A
             lib: core
           - eventKey: OnActionPress
-            code: >-
-              this.dpad_combo_len = appendCombo("s", this.combo,
-              this.combo_max_len);
+            code: 'appendCombo("s", this.combo, this.comboMaxLen);'
             arguments:
               action: S
             lib: core
           - eventKey: OnActionPress
-            code: >-
-              this.dpad_combo_len = appendCombo("d", this.combo,
-              this.combo_max_len);
+            code: 'appendCombo("d", this.combo, this.comboMaxLen);'
             arguments:
               action: D
             lib: core
@@ -443,14 +435,14 @@ assets:
             code: |-
               // Init
               this.combo = [];
-              this.combo_len = 0;
-              this.combo_max_len = 4;
+              this.comboMaxLen = 4;
               this.photoOnScreen = false;
+              this.photoAlreadyTriggered = false;
             arguments: {}
             lib: core
           - eventKey: OnActionPress
             code: |-
-              if(!this.photoOnScreen) {
+              if(!this.photoOnScreen && !this.photoAlreadyTriggered) {
                   
                   var birds_object = rooms.list["MainScene"][0].combo_bird;
                   var spot = templates.list["PhotoSpot"][0];
@@ -463,11 +455,12 @@ assets:
                               if(bird_list[bird].isOnPhotoSpot && bird_list[bird].speed == 0) {
                                   templates.copy("PhotoView", camera.width/2, camera.height/2);
                                   this.photoOnScreen = true;
+                                  this.photoAlreadyTriggered = true;
                               }
                           }
                       }
                   }
-              } else {
+              } else if(this.photoOnScreen) {
                   templates.list["PhotoView"][0].kill = true;
                   this.photoOnScreen = false;
               }
@@ -485,7 +478,7 @@ assets:
           - structure: atomic
             type: number
             mappedType: number
-            name: combo_max_len
+            name: comboMaxLen
             readableName: Combo Max Len
             required: true
             fixedLength: 0
@@ -495,6 +488,13 @@ assets:
             name: photoOnScreen
             readableName: photoOnScreen
             required: true
+            fixedLength: 0
+          - structure: atomic
+            type: text
+            mappedType: number
+            name: photoAlreadyTriggered
+            readableName: photoAlreadyTriggered
+            required: false
             fixedLength: 0
         extendTypes: ''
         lastmod: 1759759296850
@@ -1081,13 +1081,13 @@ assets:
               var dpad = templates_list[0]; // First and only element
 
               // Only check if the combo is complete ie 4 length
-              if(dpad.combo.length == dpad.combo_max_len) {
+              if(dpad.combo.length == dpad.comboMaxLen) {
                   for (const bird in birds_object) {
                       var combo_array = this.combo_bird[bird];
                       var compareBool = true;
 
                       // Match combo
-                      for(var i=0;i<dpad.combo_max_len;i++) {
+                      for(var i=0;i<dpad.comboMaxLen;i++) {
                           compareBool = compareBool && combo_array[i] == dpad.combo[i];
                       }
 
@@ -1112,6 +1112,7 @@ assets:
                               target_bird.targetSpotY = target_spot[1];
                               target_bird.direction = u.direction(target_bird, {x: target_bird.targetSpotX, y:target_bird.targetSpotY});
                               target_bird.isOnPhotoSpot = true;
+                              dpad.photoAlreadyTriggered = false;
                           }
 
                           // Reset combo
@@ -1134,7 +1135,7 @@ assets:
         required: true
         fixedLength: 0
     extendTypes: ''
-    lastmod: 1759738733118
+    lastmod: 1759763051488
     uid: nFb4kRtrq2ptPQ
   - type: folder
     uid: 5LfBTg9mH4CK2r
@@ -1383,7 +1384,7 @@ assets:
             Bird_B: ''
             Bird_C: ''
             Bird_D: ''
-        lastmod: 1759761172377
+        lastmod: 1759761999122
         events: []
         behaviors:
           - nFb4kRtrq2ptPQ
@@ -1406,7 +1407,7 @@ assets:
         restrictMinX: 0
         restrictMaxY: 720
         restrictMinY: 0
-        isUi: false
+        isUi: true
         name: Main Menu
         backgroundColor: '#000000'
         follow: -1
@@ -1437,7 +1438,7 @@ assets:
             bindings: {}
         tiles: []
         extends: {}
-        lastmod: 1759759007983
+        lastmod: 1759763141578
         events: []
         behaviors: []
         extendTypes: ''
