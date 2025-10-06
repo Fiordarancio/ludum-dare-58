@@ -1009,11 +1009,11 @@ assets:
             lib: core
         extends:
           cgroup: ''
-        lastmod: 1759779417293
+        lastmod: 1759780713322
         uid: pj5NG79TQW1w3c
         behaviors: []
         extendTypes: ''
-        defaultText: ''
+        defaultText: Help
         textStyle: -1
       - type: template
         baseClass: AnimatedSprite
@@ -2253,7 +2253,7 @@ assets:
             Cockatiel: false
             Buzzard: false
             Blackbird: false
-        lastmod: 1759780569966
+        lastmod: 1759780725447
         events: []
         behaviors:
           - nFb4kRtrq2ptPQ
