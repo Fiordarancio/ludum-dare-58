@@ -12,6 +12,7 @@ libs:
   pointer.polyfill: {}
   gamepad: {}
   vkeys: {}
+  capture: {}
 startroom: -1
 contentTypes: []
 actions:
@@ -32,61 +33,11 @@ actions:
       - code: keyboard.KeyD
       - code: keyboard.ArrowRight
 scripts:
-  - name: dpadFuncs
-    code: >-
-      /* Use scripts to define frequent functions and import small libraries */
-
-
-      function appendCombo(combo_id:string, combo_array:Array<string>,
-      combo_max_len:number):number {
-          var newLen = 0;
-          var noSoundPlaying = true;
-          // Lists of sounds to check
-          var soundsList = ["w-sound", "a-sound", "s-sound", "d-sound"]
-
-          // Check that nothing is playing
-          soundsList.forEach((sound) => noSoundPlaying = (noSoundPlaying && !sounds.playing(sound)));
-
-          // If no sound is playing, add new combo
-          if(noSoundPlaying) {
-              combo_array[combo_array.length] = combo_id;
-              sounds.play(combo_id + "-sound"); // Assemble sound name
-              newLen++
-
-              if(timer.timers.size > 0) {
-                  timer.timers.forEach((tim) => {
-                      if(tim.name.includes("combo_timer"))
-                          timer.timers.delete(tim);
-                  })
-              }
-
-              // If combo is full, empty it
-              if(newLen == combo_max_len) {
-                  u.wait(800); // Wait before allowing more combos
-                  combo_array.length = 0;
-              } else {
-                  // Setup timer
-                  var cur_timer = timer.addUi(2000, "combo_timer");
-                  cur_timer.then(() => {
-                      if(!cur_timer.rejected) {
-                          // Reset combo
-                          combo_array.length = 0;
-                          console.log("Timer run out");
-                      }
-                  })
-                  .catch(e => {
-                      console.log('Timer removed', e);
-                  });
-              }
-          }
-
-          return newLen;
-      }
   - name: spotFuncs
     code: |-
       /* Use scripts to define frequent functions and import small libraries */
 
-      // Pick target coords
+      // Pick target coords for tree spot
       function nextTreeSpot(lastX: number, lastY: number) : number[] {
           var spotTemplates = templates.list['TreeSpot'];
           if (spotTemplates.length === 0) {
@@ -103,6 +54,78 @@ scripts:
               } while (nextSpotX === lastX && nextSpotY === lastY)
               return [ nextSpotX, nextSpotY ]
           }
+      }
+
+      function togglePhotoSpot(lastX: number, lastY: number) : void {
+          var spotTemplates = templates.list['PhotoSpot'];
+
+          for(const spot in spotTemplates) {
+              if(spotTemplates[spot].position.x == lastX && spotTemplates[spot].position.y == lastY)
+                  spotTemplates[spot].occupied = !spotTemplates[spot].occupied;
+          }
+      }
+
+      // Pick target coords for photo spot
+      function getPhotoSpot() : number[] {
+          var spotTemplates = templates.list['PhotoSpot'];
+          let nextSpotX: number = -1, nextSpotY: number = -1;
+
+          for(const spot in spotTemplates) {
+              if(spotTemplates[spot].occupied)
+                  continue;
+              
+              nextSpotX = spotTemplates[spot].position.x;
+              nextSpotY = spotTemplates[spot].position.y;
+              break;
+          }
+
+          return [ nextSpotX, nextSpotY ]
+      }
+  - name: dpadFuncs
+    code: >-
+      /* Use scripts to define frequent functions and import small libraries */
+
+
+      function appendCombo(combo_id:string, combo_array:Array<string>,
+      combo_max_len:number):number {
+          var newLen = 0;
+          var noSoundPlaying = true;
+          // Lists of sounds to check
+          var soundsList = ["w-sound", "a-sound", "s-sound", "d-sound"]
+
+          // Check that nothing is playing
+          soundsList.forEach((sound) => noSoundPlaying = (noSoundPlaying && !sounds.playing(sound)));
+
+          // If no sound is playing, add new combo
+          if(noSoundPlaying && combo_array.length < combo_max_len) {
+
+              combo_array[combo_array.length] = combo_id;
+              sounds.play(combo_id + "-sound"); // Assemble sound name
+              newLen++
+
+              // Only 1 combo_timer should be present at any time
+              if(timer.timers.size > 0) {
+                  timer.timers.forEach((tim) => {
+                      if(tim.name.includes("combo_timer"))
+                          timer.timers.delete(tim);
+                  })
+              }
+
+              // Setup timer
+              var cur_timer = timer.addUi(2000, "combo_timer");
+              cur_timer.then(() => {
+                  if(!cur_timer.rejected && combo_array.length != 0) {
+                      // Reset combo
+                      combo_array.length = 0;
+                      console.log("Timer run out");
+                  }
+              })
+              .catch(e => {
+                  console.log('Timer removed', e);
+              });
+          }
+
+          return newLen;
       }
   - name: utils
     code: |-
@@ -179,18 +202,6 @@ assets:
           'y': 1
         rotation: 0
         uid: WPcLqW4147Ft77
-        exts: {}
-        customProperties: {}
-        bindings: {}
-      - x: 1216
-        'y': 512
-        opacity: 1
-        tint: 16777215
-        scale:
-          x: 1
-          'y': 1
-        rotation: 0
-        uid: nL5WjpR1g2nCMF
         exts: {}
         customProperties: {}
         bindings: {}
@@ -350,30 +361,6 @@ assets:
         exts: {}
         customProperties: {}
         bindings: {}
-      - x: 320
-        'y': 704
-        opacity: 1
-        tint: 16777215
-        scale:
-          x: 1
-          'y': 1
-        rotation: 0
-        uid: nL5WjpR1g2nCMF
-        exts: {}
-        customProperties: {}
-        bindings: {}
-      - x: 1856
-        'y': 704
-        opacity: 1
-        tint: 16777215
-        scale:
-          x: 1
-          'y': 1
-        rotation: 0
-        uid: nL5WjpR1g2nCMF
-        exts: {}
-        customProperties: {}
-        bindings: {}
     tiles: []
     extends:
       treeSpots: 0
@@ -383,9 +370,15 @@ assets:
         bird_B: DSAW
         bird_C: ASDW
         bird_D: WSSA
-    lastmod: 1759678646609
+      combo_bird:
+        Bird_A: ''
+        Bird_B: ''
+        Bird_C: ''
+        Bird_D: ''
+    lastmod: 1759746994747
     events: []
-    behaviors: []
+    behaviors:
+      - nFb4kRtrq2ptPQ
     extendTypes: ''
     uid: 6ntH8Rg2zmgMMK
   - type: folder
@@ -416,7 +409,7 @@ assets:
                       // Move directly to target position
                       this.position = target;
                       // Stop if on photoTarget and wait
-                      if (this.isPhotoTarget) {
+                      if (this.isOnPhotoSpot) {
                           this.speed = 0;
                           // Wait seconds
                           this.timer1 = this.photoSeconds;
@@ -459,6 +452,8 @@ assets:
 
               this.isOnPhotoSpot = false;
 
+              this.speed = 120;
+
 
               // Pick next spot and get direction
 
@@ -487,7 +482,7 @@ assets:
             'y': 0
           isOnPhotoSpot: false
           photoSeconds: 3
-        lastmod: 1759679987823
+        lastmod: 1759746773440
         uid: nL5WjpR1g2nCMF
         behaviors:
           - tL8L74bG19RKmN
@@ -597,10 +592,26 @@ assets:
         events: []
         extends:
           cgroup: ''
-        lastmod: 1759678535123
+        lastmod: 1759741700013
         uid: 16Pp9Bw4hmFhwR
-        behaviors: []
+        behaviors:
+          - cJfhfMf11pQ7Qp
         extendTypes: ''
+      - type: behavior
+        name: PhotoSpot
+        behaviorType: template
+        events: []
+        specification:
+          - structure: atomic
+            type: checkbox
+            mappedType: number
+            name: occupied
+            readableName: ''
+            required: true
+            fixedLength: 0
+        extendTypes: ''
+        lastmod: 1759741700016
+        uid: cJfhfMf11pQ7Qp
   - type: folder
     uid: pkjrtnLhC9NBrD
     colorClass: text
@@ -610,7 +621,7 @@ assets:
     entries:
       - type: template
         baseClass: AnimatedSprite
-        name: dpad_template
+        name: Dpad
         depth: 0
         texture: fFt5DLkG9zCLkh
         playAnimationOnStart: false
@@ -630,7 +641,7 @@ assets:
           - dHtwh8wh7QdhrQ
         extendTypes: ''
       - type: behavior
-        name: dpad_behaviour
+        name: Dpad
         behaviorType: template
         events:
           - eventKey: OnActionPress
@@ -813,7 +824,7 @@ assets:
         isBlank: false
         source: >-
           C:\Users\User\Documents\GitHub\ludum-dare-58\Collector\Assets\bird_A.png
-      - lastmod: 1759605831017
+      - lastmod: 1759684611114
         type: texture
         name: treeSpot
         untill: 0
@@ -842,6 +853,19 @@ assets:
         isBlank: false
         source: >-
           C:\Users\User\Documents\GitHub\ludum-dare-58\Collector\Assets\treeSpot.png
+        stripPoints:
+          - x: 0
+            'y': -8
+          - x: 8
+            'y': -2
+          - x: 5
+            'y': 6
+          - x: -5
+            'y': 6
+          - x: -8
+            'y': -2
+        closedStrip: true
+        r: 8
       - lastmod: 1759661073581
         type: texture
         name: dpad
@@ -1276,6 +1300,75 @@ assets:
             panning:
               refDistance: 0.5
               rolloffFactor: 1
+  - type: behavior
+    name: ComboLogic
+    behaviorType: room
+    events:
+      - eventKey: OnRoomStart
+        code: |-
+          this.combo_bird["Bird_A"] = "wasd"
+          this.combo_bird["Bird_B"] = "asdw"
+          this.combo_bird["Bird_C"] = "sdwa"
+          this.combo_bird["Bird_D"] = "dwas"
+        arguments: {}
+        lib: core
+      - eventKey: OnDraw
+        code: |-
+          var templates_list = templates.list["Dpad"];
+          var birds_object = this.combo_bird;
+
+          if(templates_list.length == 1) {
+              var dpad = templates_list[0]; // First and only element
+
+              // Only check if the combo is complete ie 4 length
+              if(dpad.combo.length == dpad.combo_max_len) {
+                  for (const bird in birds_object) {
+                      var combo_array = this.combo_bird[bird];
+                      var compareBool = true;
+
+                      // Match combo
+                      for(var i=0;i<dpad.combo_max_len;i++) {
+                          compareBool = compareBool && combo_array[i] == dpad.combo[i];
+                      }
+
+                      // Combos match
+                      if(compareBool) {
+                          var bird_list = templates.list[bird];
+                          var target_bird = bird_list[randIndex(bird_list.length)];
+                          var target_spot = getPhotoSpot();
+
+                          // Check if spot found is valid
+                          if(target_spot[0] != -1 && target_spot[1] != -1) {
+                              togglePhotoSpot(target_spot[0], target_spot[1]);
+                              // Set next target
+                              target_bird.targetSpotX = target_spot[0];
+                              target_bird.targetSpotY = target_spot[1];
+                              target_bird.direction = u.direction(target_bird, {x: target_bird.targetSpotX, y:target_bird.targetSpotY});
+                              target_bird.isOnPhotoSpot = true;
+                          }
+
+                          // Reset combo
+                          dpad.combo.length = 0;
+                          break;
+                      }
+                  }
+              }
+          } else {
+              console.log("Error: incorrect amount of dpads detected, should be 1: " + templates_list.length);
+          }
+        arguments: {}
+        lib: core
+    specification:
+      - structure: map
+        type: text
+        mappedType: text
+        name: combo_bird
+        readableName: Combo per bird
+        required: true
+        fixedLength: 0
+    extendTypes: ''
+    lastmod: 1759738733118
+    uid: nFb4kRtrq2ptPQ
 globalVars: []
 settings:
   authoring:
