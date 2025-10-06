@@ -26,7 +26,8 @@ Assets/Art/*.piskel
 Assets/Art/*.xcf
 Assets/Art/*.gif
 
-# Ignore References folder
+# Ignore other folders
 References/
+Screenshots/
 
 Collector/Exported/
