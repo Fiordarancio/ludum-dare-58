@@ -456,6 +456,12 @@ assets:
                                   templates.copy("PhotoView", camera.width/2, camera.height/2);
                                   this.photoOnScreen = true;
                                   this.photoAlreadyTriggered = true;
+                              } else {
+                                  var spot = nextTreeSpot(bird_list[bird].position.x, bird_list[bird].position.y);
+                                  bird_list[bird].targetSpotX = spot[0];
+                                  bird_list[bird].targetSpotY = spot[1];
+                                  // Get direction
+                                  bird_list[bird].direction = u.direction(bird_list[bird], {x: bird_list[bird].targetSpotX, y:bird_list[bird].targetSpotY});
                               }
                           }
                       }
@@ -1438,7 +1444,7 @@ assets:
             bindings: {}
         tiles: []
         extends: {}
-        lastmod: 1759763141578
+        lastmod: 1759763399457
         events: []
         behaviors: []
         extendTypes: ''
