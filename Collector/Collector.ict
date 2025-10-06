@@ -37,6 +37,18 @@ actions:
     methods:
       - code: keyboard.KeyP
       - code: gamepad.Button1
+  - name: T
+    methods:
+      - code: keyboard.KeyT
+  - name: F
+    methods:
+      - code: keyboard.KeyF
+  - name: G
+    methods:
+      - code: keyboard.KeyG
+  - name: H
+    methods:
+      - code: keyboard.KeyH
 scripts:
   - name: spotFuncs
     code: |-
@@ -283,7 +295,7 @@ assets:
             code: |-
               if (!this.isPlayerPointing) {
                   this.isPlayerPointing = true;
-                  sounds.play(this.birdSound, { volume: 0.1, loop: true });
+                  sounds.play(this.birdSound, { volume: 0.25, loop: true });
                   // sounds.fade(this.birdSound, 1, 250); // non funge :(
               }
             arguments: {}
@@ -320,7 +332,7 @@ assets:
             required: true
             fixedLength: 0
         extendTypes: ''
-        lastmod: 1759771037494
+        lastmod: 1759786974998
         uid: tL8L74bG19RKmN
       - type: template
         baseClass: AnimatedSprite
@@ -793,6 +805,26 @@ assets:
           isUi: false
         repeaterSettings:
           defaultCount: 3
+      - type: template
+        baseClass: AnimatedSprite
+        name: Crane
+        depth: 0
+        texture: PmWj5wcd6dww63
+        playAnimationOnStart: false
+        loopAnimation: true
+        animationFPS: 30
+        visible: true
+        events: []
+        extends:
+          cgroup: ''
+          isPlayerPointing: false
+          birdSound: K7Kz29rFg36WQt
+          birdType: Crane
+        lastmod: 1759786855631
+        uid: Q4H4f2W3FghFW6
+        behaviors:
+          - tL8L74bG19RKmN
+        extendTypes: ''
   - type: folder
     uid: pkjrtnLhC9NBrD
     colorClass: text
@@ -1035,10 +1067,30 @@ assets:
         loopAnimation: true
         animationFPS: 30
         visible: true
-        events: []
+        events:
+          - eventKey: OnActionDown
+            code: ''
+            arguments:
+              action: T
+            lib: core
+          - eventKey: OnActionDown
+            code: ''
+            arguments:
+              action: F
+            lib: core
+          - eventKey: OnActionDown
+            code: ''
+            arguments:
+              action: G
+            lib: core
+          - eventKey: OnActionDown
+            code: ''
+            arguments:
+              action: H
+            lib: core
         extends:
           cgroup: ''
-        lastmod: 1759780094120
+        lastmod: 1759787573191
         uid: 3tmkq9rr9cczL3
         behaviors: []
         extendTypes: ''
@@ -1650,7 +1702,7 @@ assets:
         isBlank: false
         source: >-
           C:\Users\User\Documents\GitHub\ludum-dare-58\Assets\Art\ScreenCredits.png
-      - lastmod: 1759784795060
+      - lastmod: 1759786756498
         type: texture
         name: empty
         untill: 0
@@ -2131,6 +2183,284 @@ assets:
             panning:
               refDistance: 0.5
               rolloffFactor: 1
+      - type: folder
+        uid: H664RrnqzF2dWH
+        colorClass: act
+        icon: music
+        name: Music
+        lastmod: 1759786481251
+        entries:
+          - name: MainMusic
+            uid: wPR3fbpwj16d5F
+            type: sound
+            lastmod: 1759786565392
+            preload: true
+            variants:
+              - uid: hk6z7rKhtf8rJ6
+                source: >-
+                  C:\Users\User\Documents\GitHub\ludum-dare-58\Assets\Sounds\music.mp3
+            distortion:
+              enabled: false
+              min: 0
+              max: 1
+            pitch:
+              enabled: false
+              min: 0
+              max: 1
+            reverb:
+              enabled: false
+              decayMin: 2
+              decayMax: 2
+              secondsMin: 2
+              secondsMax: 3
+              reverse: false
+            volume:
+              enabled: false
+              min: 0
+              max: 1
+            eq:
+              enabled: false
+              bands:
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+            panning:
+              refDistance: 0.5
+              rolloffFactor: 1
+          - name: ChillMusic
+            uid: BPMzTHpgjgHTbF
+            type: sound
+            lastmod: 1759786629926
+            preload: true
+            variants:
+              - uid: 13tJtKRpNfTjzL
+                source: >-
+                  C:\Users\User\Documents\GitHub\ludum-dare-58\Assets\Sounds\music_chill.mp3
+            distortion:
+              enabled: false
+              min: 0
+              max: 1
+            pitch:
+              enabled: false
+              min: 0
+              max: 1
+            reverb:
+              enabled: false
+              decayMin: 2
+              decayMax: 2
+              secondsMin: 2
+              secondsMax: 3
+              reverse: false
+            volume:
+              enabled: false
+              min: 0
+              max: 1
+            eq:
+              enabled: false
+              bands:
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+            panning:
+              refDistance: 0.5
+              rolloffFactor: 1
+      - name: CraneSound
+        uid: K7Kz29rFg36WQt
+        type: sound
+        lastmod: 1759786803350
+        preload: true
+        variants:
+          - uid: GkcCCQmHFp1CQr
+            source: >-
+              C:\Users\User\Documents\GitHub\ludum-dare-58\Assets\Sounds\construction_site.mp3
+        distortion:
+          enabled: false
+          min: 0
+          max: 1
+        pitch:
+          enabled: false
+          min: 0
+          max: 1
+        reverb:
+          enabled: false
+          decayMin: 2
+          decayMax: 2
+          secondsMin: 2
+          secondsMax: 3
+          reverse: false
+        volume:
+          enabled: false
+          min: 0
+          max: 1
+        eq:
+          enabled: false
+          bands:
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+        panning:
+          refDistance: 0.5
+          rolloffFactor: 1
+      - type: folder
+        uid: 4McTMt8KjbL3g5
+        colorClass: act
+        icon: help-circle
+        name: SecretSounds
+        lastmod: 1759787609789
+        entries:
+          - name: T
+            uid: PfGJdKTfMn6CFH
+            type: sound
+            lastmod: 1759787631381
+            preload: true
+            variants: []
+            distortion:
+              enabled: false
+              min: 0
+              max: 1
+            pitch:
+              enabled: false
+              min: 0
+              max: 1
+            reverb:
+              enabled: false
+              decayMin: 2
+              decayMax: 2
+              secondsMin: 2
+              secondsMax: 3
+              reverse: false
+            volume:
+              enabled: false
+              min: 0
+              max: 1
+            eq:
+              enabled: false
+              bands:
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+            panning:
+              refDistance: 0.5
+              rolloffFactor: 1
+          - name: F
+            uid: P2hHJQQRn9gHdC
+            type: sound
+            lastmod: 1759787735993
+            preload: true
+            variants: []
+            distortion:
+              enabled: false
+              min: 0
+              max: 1
+            pitch:
+              enabled: false
+              min: 0
+              max: 1
+            reverb:
+              enabled: false
+              decayMin: 2
+              decayMax: 2
+              secondsMin: 2
+              secondsMax: 3
+              reverse: false
+            volume:
+              enabled: false
+              min: 0
+              max: 1
+            eq:
+              enabled: false
+              bands:
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+            panning:
+              refDistance: 0.5
+              rolloffFactor: 1
   - type: folder
     uid: 5LfBTg9mH4CK2r
     colorClass: accent1
@@ -2400,6 +2730,18 @@ assets:
             exts: {}
             customProperties: {}
             bindings: {}
+          - x: 1312
+            'y': 352
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 0.875
+              'y': 0.75
+            rotation: 0
+            uid: Q4H4f2W3FghFW6
+            exts: {}
+            customProperties: {}
+            bindings: {}
         tiles: []
         extends:
           treeSpots: 0
@@ -2419,7 +2761,7 @@ assets:
             Cockatiel: false
             Buzzard: false
             Blackbird: false
-        lastmod: 1759781453707
+        lastmod: 1759787022836
         events: []
         behaviors:
           - nFb4kRtrq2ptPQ
@@ -2533,9 +2875,10 @@ assets:
             bindings: {}
         tiles: []
         extends: {}
-        lastmod: 1759785552377
+        lastmod: 1759787484836
         events: []
-        behaviors: []
+        behaviors:
+          - 8HqrGzrqt8PWn2
         extendTypes: ''
         uid: BdLPM7HMNMtRgJ
       - type: behavior
@@ -2548,6 +2891,8 @@ assets:
               this.combo_bird["Cockatiel"] = "adasw"
               this.combo_bird["Blackbird"] = "wsaaa"
               this.combo_bird["Buzzard"] = "wdwd"
+
+              sounds.play('ChillMusic', { volume: 0.1, loop: true });
             arguments: {}
             lib: core
           - eventKey: OnDraw
@@ -2610,6 +2955,10 @@ assets:
               }
             arguments: {}
             lib: core
+          - eventKey: OnRoomEnd
+            code: sounds.stop('ChillMusic');
+            arguments: {}
+            lib: core
         specification:
           - structure: map
             type: text
@@ -2626,8 +2975,24 @@ assets:
             required: true
             fixedLength: 0
         extendTypes: ''
-        lastmod: 1759782759484
+        lastmod: 1759787177280
         uid: nFb4kRtrq2ptPQ
+      - type: behavior
+        name: MainMenuMusicBehavior
+        behaviorType: room
+        events:
+          - eventKey: OnRoomStart
+            code: 'sounds.play(''MainMusic'', {volume: 0.5});'
+            arguments: {}
+            lib: core
+          - eventKey: OnRoomEnd
+            code: sounds.stop("MainMusic");
+            arguments: {}
+            lib: core
+        specification: []
+        extendTypes: ''
+        lastmod: 1759787179344
+        uid: 8HqrGzrqt8PWn2
 globalVars: []
 settings:
   authoring:
