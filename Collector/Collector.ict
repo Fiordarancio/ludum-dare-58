@@ -3614,7 +3614,7 @@ settings:
       - 0
       - 1
     versionPostfix: ''
-    appId: ''
+    appId: eu.ld58.collector.birddex
   rendering:
     usePixiLegacy: true
     transparent: false
