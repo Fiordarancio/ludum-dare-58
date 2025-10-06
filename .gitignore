@@ -22,9 +22,9 @@ node_modules/
 .env
 
 # Ignore .piskel and .gimp
-Assets/*.piskel
-Assets/*.xcf
-Assets/*.gif
+Assets/Art/*.piskel
+Assets/Art/*.xcf
+Assets/Art/*.gif
 
 # Ignore References folder
 References/
