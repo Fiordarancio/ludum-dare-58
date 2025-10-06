@@ -922,6 +922,8 @@ assets:
                                   // Mark as captured
                                   rooms.list["MainScene"][0].bird_captured[photoBird.birdType] = true;
                                   console.log(photoBird.birdType + " captured!");
+                                  // Click
+                                  sounds.play('PhotoSound', {loop:false});
                               } else if(photoBird.isOnPhotoSpot) {
                                   togglePhotoSpot(photoBird.targetSpotX, photoBird.targetSpotY);
                                   var spot = nextTreeSpot(photoBird.position.x, photoBird.position.y);
@@ -979,7 +981,7 @@ assets:
             required: false
             fixedLength: 0
         extendTypes: ''
-        lastmod: 1759785775240
+        lastmod: 1759789623299
         uid: dHtwh8wh7QdhrQ
       - type: template
         baseClass: AnimatedSprite
@@ -1069,28 +1071,36 @@ assets:
         visible: true
         events:
           - eventKey: OnActionDown
-            code: ''
+            code: |-
+              const ts = ['T1', 'T2', 'T3'];
+              sounds.play(ts[0], {loop: false});
             arguments:
               action: T
             lib: core
           - eventKey: OnActionDown
-            code: ''
+            code: |-
+              const fs = ['F1', 'F2', 'F3'];
+              sounds.play(fs[0], {loop: false});
             arguments:
               action: F
             lib: core
           - eventKey: OnActionDown
-            code: ''
+            code: |-
+              const gs = ['G1', 'G2', 'G3'];
+              sounds.play(gs[0], {loop: false});
             arguments:
               action: G
             lib: core
           - eventKey: OnActionDown
-            code: ''
+            code: |-
+              const hs = ['H1', 'H2', 'H3'];
+              sounds.play(hs[0], {loop: false});
             arguments:
               action: H
             lib: core
         extends:
           cgroup: ''
-        lastmod: 1759787573191
+        lastmod: 1759789795886
         uid: 3tmkq9rr9cczL3
         behaviors: []
         extendTypes: ''
@@ -2359,12 +2369,15 @@ assets:
         name: SecretSounds
         lastmod: 1759787609789
         entries:
-          - name: T
+          - name: F2
             uid: PfGJdKTfMn6CFH
             type: sound
-            lastmod: 1759787631381
+            lastmod: 1759789479747
             preload: true
-            variants: []
+            variants:
+              - uid: 97gWLJNDp7H4TN
+                source: >-
+                  C:\Users\User\Documents\GitHub\ludum-dare-58\Assets\Sounds\secret_sounds\f2.mp3
             distortion:
               enabled: false
               min: 0
@@ -2410,12 +2423,15 @@ assets:
             panning:
               refDistance: 0.5
               rolloffFactor: 1
-          - name: F
+          - name: F1
             uid: P2hHJQQRn9gHdC
             type: sound
-            lastmod: 1759787735993
+            lastmod: 1759789477589
             preload: true
-            variants: []
+            variants:
+              - uid: 7MrF7t9nztrj2h
+                source: >-
+                  C:\Users\User\Documents\GitHub\ludum-dare-58\Assets\Sounds\secret_sounds\f1.mp3
             distortion:
               enabled: false
               min: 0
@@ -2461,6 +2477,600 @@ assets:
             panning:
               refDistance: 0.5
               rolloffFactor: 1
+          - name: F3
+            uid: Pnp4J728JPr826
+            type: sound
+            lastmod: 1759789627267
+            preload: true
+            variants:
+              - uid: Jgf919jg27DBg8
+                source: >-
+                  C:\Users\User\Documents\GitHub\ludum-dare-58\Assets\Sounds\secret_sounds\f3.mp3
+            distortion:
+              enabled: false
+              min: 0
+              max: 1
+            pitch:
+              enabled: false
+              min: 0
+              max: 1
+            reverb:
+              enabled: false
+              decayMin: 2
+              decayMax: 2
+              secondsMin: 2
+              secondsMax: 3
+              reverse: false
+            volume:
+              enabled: false
+              min: 0
+              max: 1
+            eq:
+              enabled: false
+              bands:
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+            panning:
+              refDistance: 0.5
+              rolloffFactor: 1
+          - name: T1
+            uid: P1Cz9mm1Rn4z27
+            type: sound
+            lastmod: 1759789039545
+            preload: true
+            variants:
+              - uid: CW6GBDwrhKNFHM
+                source: >-
+                  C:\Users\User\Documents\GitHub\ludum-dare-58\Assets\Sounds\secret_sounds\t1.mp3
+            distortion:
+              enabled: false
+              min: 0
+              max: 1
+            pitch:
+              enabled: false
+              min: 0
+              max: 1
+            reverb:
+              enabled: false
+              decayMin: 2
+              decayMax: 2
+              secondsMin: 2
+              secondsMax: 3
+              reverse: false
+            volume:
+              enabled: false
+              min: 0
+              max: 1
+            eq:
+              enabled: false
+              bands:
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+            panning:
+              refDistance: 0.5
+              rolloffFactor: 1
+          - name: T2
+            uid: 75TkwJJk6mgFqG
+            type: sound
+            lastmod: 1759789060898
+            preload: true
+            variants:
+              - uid: 2LqpTQm5n5zJPw
+                source: >-
+                  C:\Users\User\Documents\GitHub\ludum-dare-58\Assets\Sounds\secret_sounds\t2.mp3
+            distortion:
+              enabled: false
+              min: 0
+              max: 1
+            pitch:
+              enabled: false
+              min: 0
+              max: 1
+            reverb:
+              enabled: false
+              decayMin: 2
+              decayMax: 2
+              secondsMin: 2
+              secondsMax: 3
+              reverse: false
+            volume:
+              enabled: false
+              min: 0
+              max: 1
+            eq:
+              enabled: false
+              bands:
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+            panning:
+              refDistance: 0.5
+              rolloffFactor: 1
+          - name: T3
+            uid: rw27G6Cfc8WFzg
+            type: sound
+            lastmod: 1759789071883
+            preload: true
+            variants:
+              - uid: qwMrCcN2bbmbzh
+                source: >-
+                  C:\Users\User\Documents\GitHub\ludum-dare-58\Assets\Sounds\secret_sounds\t3.mp3
+            distortion:
+              enabled: false
+              min: 0
+              max: 1
+            pitch:
+              enabled: false
+              min: 0
+              max: 1
+            reverb:
+              enabled: false
+              decayMin: 2
+              decayMax: 2
+              secondsMin: 2
+              secondsMax: 3
+              reverse: false
+            volume:
+              enabled: false
+              min: 0
+              max: 1
+            eq:
+              enabled: false
+              bands:
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+            panning:
+              refDistance: 0.5
+              rolloffFactor: 1
+          - name: H1
+            uid: tGDgh4zCpjmWPH
+            type: sound
+            lastmod: 1759789085489
+            preload: true
+            variants:
+              - uid: T7WhPhHpNMW7mB
+                source: >-
+                  C:\Users\User\Documents\GitHub\ludum-dare-58\Assets\Sounds\secret_sounds\h1.mp3
+            distortion:
+              enabled: false
+              min: 0
+              max: 1
+            pitch:
+              enabled: false
+              min: 0
+              max: 1
+            reverb:
+              enabled: false
+              decayMin: 2
+              decayMax: 2
+              secondsMin: 2
+              secondsMax: 3
+              reverse: false
+            volume:
+              enabled: false
+              min: 0
+              max: 1
+            eq:
+              enabled: false
+              bands:
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+            panning:
+              refDistance: 0.5
+              rolloffFactor: 1
+          - name: H2
+            uid: LtNGG3mm9k6zmt
+            type: sound
+            lastmod: 1759789095751
+            preload: true
+            variants:
+              - uid: f2JFL3zQ4Wc696
+                source: >-
+                  C:\Users\User\Documents\GitHub\ludum-dare-58\Assets\Sounds\secret_sounds\h2.mp3
+            distortion:
+              enabled: false
+              min: 0
+              max: 1
+            pitch:
+              enabled: false
+              min: 0
+              max: 1
+            reverb:
+              enabled: false
+              decayMin: 2
+              decayMax: 2
+              secondsMin: 2
+              secondsMax: 3
+              reverse: false
+            volume:
+              enabled: false
+              min: 0
+              max: 1
+            eq:
+              enabled: false
+              bands:
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+            panning:
+              refDistance: 0.5
+              rolloffFactor: 1
+          - name: H3
+            uid: 5L7BDgF9565RjH
+            type: sound
+            lastmod: 1759789107826
+            preload: true
+            variants:
+              - uid: gGpT46c72KNL8D
+                source: >-
+                  C:\Users\User\Documents\GitHub\ludum-dare-58\Assets\Sounds\secret_sounds\h3.mp3
+            distortion:
+              enabled: false
+              min: 0
+              max: 1
+            pitch:
+              enabled: false
+              min: 0
+              max: 1
+            reverb:
+              enabled: false
+              decayMin: 2
+              decayMax: 2
+              secondsMin: 2
+              secondsMax: 3
+              reverse: false
+            volume:
+              enabled: false
+              min: 0
+              max: 1
+            eq:
+              enabled: false
+              bands:
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+            panning:
+              refDistance: 0.5
+              rolloffFactor: 1
+          - name: G1
+            uid: q25M2mtWjfRnHr
+            type: sound
+            lastmod: 1759789116922
+            preload: true
+            variants:
+              - uid: zC6B4GWQt1dnHN
+                source: >-
+                  C:\Users\User\Documents\GitHub\ludum-dare-58\Assets\Sounds\secret_sounds\g1.mp3
+            distortion:
+              enabled: false
+              min: 0
+              max: 1
+            pitch:
+              enabled: false
+              min: 0
+              max: 1
+            reverb:
+              enabled: false
+              decayMin: 2
+              decayMax: 2
+              secondsMin: 2
+              secondsMax: 3
+              reverse: false
+            volume:
+              enabled: false
+              min: 0
+              max: 1
+            eq:
+              enabled: false
+              bands:
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+            panning:
+              refDistance: 0.5
+              rolloffFactor: 1
+          - name: G2
+            uid: Jn3zCP31RQdWrQ
+            type: sound
+            lastmod: 1759789126700
+            preload: true
+            variants:
+              - uid: fLtFbH7w4G8qtL
+                source: >-
+                  C:\Users\User\Documents\GitHub\ludum-dare-58\Assets\Sounds\secret_sounds\g2.mp3
+            distortion:
+              enabled: false
+              min: 0
+              max: 1
+            pitch:
+              enabled: false
+              min: 0
+              max: 1
+            reverb:
+              enabled: false
+              decayMin: 2
+              decayMax: 2
+              secondsMin: 2
+              secondsMax: 3
+              reverse: false
+            volume:
+              enabled: false
+              min: 0
+              max: 1
+            eq:
+              enabled: false
+              bands:
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+            panning:
+              refDistance: 0.5
+              rolloffFactor: 1
+          - name: G3
+            uid: 4w9139GPCfhGRz
+            type: sound
+            lastmod: 1759789136278
+            preload: true
+            variants:
+              - uid: g9CRW6B2gGn9rd
+                source: >-
+                  C:\Users\User\Documents\GitHub\ludum-dare-58\Assets\Sounds\secret_sounds\g3.mp3
+            distortion:
+              enabled: false
+              min: 0
+              max: 1
+            pitch:
+              enabled: false
+              min: 0
+              max: 1
+            reverb:
+              enabled: false
+              decayMin: 2
+              decayMax: 2
+              secondsMin: 2
+              secondsMax: 3
+              reverse: false
+            volume:
+              enabled: false
+              min: 0
+              max: 1
+            eq:
+              enabled: false
+              bands:
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+            panning:
+              refDistance: 0.5
+              rolloffFactor: 1
+      - name: PhotoSound
+        uid: QC6t27dCMKTr8j
+        type: sound
+        lastmod: 1759789526509
+        preload: true
+        variants:
+          - uid: 233DDF26M1jr4N
+            source: >-
+              C:\Users\User\Documents\GitHub\ludum-dare-58\Assets\Sounds\camera_shot.mp3
+        distortion:
+          enabled: false
+          min: 0
+          max: 1
+        pitch:
+          enabled: false
+          min: 0
+          max: 1
+        reverb:
+          enabled: false
+          decayMin: 2
+          decayMax: 2
+          secondsMin: 2
+          secondsMax: 3
+          reverse: false
+        volume:
+          enabled: false
+          min: 0
+          max: 1
+        eq:
+          enabled: false
+          bands:
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+        panning:
+          refDistance: 0.5
+          rolloffFactor: 1
   - type: folder
     uid: 5LfBTg9mH4CK2r
     colorClass: accent1
@@ -2975,7 +3585,7 @@ assets:
             required: true
             fixedLength: 0
         extendTypes: ''
-        lastmod: 1759787177280
+        lastmod: 1759789625075
         uid: nFb4kRtrq2ptPQ
       - type: behavior
         name: MainMenuMusicBehavior
