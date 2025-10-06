@@ -101,7 +101,7 @@ scripts:
           soundsList.forEach((sound) => noSoundPlaying = (noSoundPlaying && !sounds.playing(sound)));
 
           // If no sound is playing, add new combo
-          if(noSoundPlaying && combo_array.length < combo_max_len) {
+          if(noSoundPlaying) {
 
               combo_array[combo_array.length] = combo_id;
               sounds.play(combo_id + "-sound"); // Assemble sound name
@@ -251,7 +251,7 @@ assets:
         extends:
           cgroup: Bird
           isPlayerPointing: false
-          birdSound: 2n32prWLKBfkk6
+          birdSound: 1r7KJfPz1hz6Gr
           targetSpotX: 0
           targetSpotY: 0
           targetSpot:
@@ -261,7 +261,7 @@ assets:
           photoSeconds: 3
           isPointingRight: false
           birdType: Cuckoo
-        lastmod: 1759771110025
+        lastmod: 1759775677012
         uid: nL5WjpR1g2nCMF
         behaviors:
           - tL8L74bG19RKmN
@@ -333,7 +333,8 @@ assets:
         events: []
         extends:
           cgroup: TreeSpot
-        lastmod: 1759768311980
+          alpha: 0
+        lastmod: 1759775985664
         uid: WPcLqW4147Ft77
         behaviors: []
         extendTypes: ''
@@ -386,7 +387,8 @@ assets:
         extends:
           cgroup: ''
           occupied: false
-        lastmod: 1759770160781
+          alpha: 0
+        lastmod: 1759775982959
         uid: 16Pp9Bw4hmFhwR
         behaviors:
           - cJfhfMf11pQ7Qp
@@ -511,7 +513,7 @@ assets:
         extends:
           cgroup: Bird
           isPlayerPointing: false
-          birdSound: 2n32prWLKBfkk6
+          birdSound: n5962kjp6mqJPf
           targetSpotX: 0
           targetSpotY: 0
           targetSpot:
@@ -521,7 +523,7 @@ assets:
           photoSeconds: 3
           isPointingRight: false
           birdType: Buzzard
-        lastmod: 1759771123063
+        lastmod: 1759775663032
         uid: p68TLLJ2Bg4pg9
         behaviors:
           - tL8L74bG19RKmN
@@ -639,7 +641,7 @@ assets:
         extends:
           cgroup: Bird
           isPlayerPointing: false
-          birdSound: 2n32prWLKBfkk6
+          birdSound: C3FJ3qkp5Lk968
           targetSpotX: 0
           targetSpotY: 0
           targetSpot:
@@ -649,7 +651,7 @@ assets:
           photoSeconds: 3
           isPointingRight: false
           birdType: Cockatiel
-        lastmod: 1759771125876
+        lastmod: 1759775669458
         uid: j5T4z3r4wbRDJT
         behaviors:
           - tL8L74bG19RKmN
@@ -767,7 +769,7 @@ assets:
         extends:
           cgroup: Bird
           isPlayerPointing: false
-          birdSound: 2n32prWLKBfkk6
+          birdSound: RWGbc3NQ9rLrgC
           targetSpotX: 0
           targetSpotY: 0
           targetSpot:
@@ -777,7 +779,7 @@ assets:
           photoSeconds: 3
           isPointingRight: false
           birdType: Blackbird
-        lastmod: 1759771118771
+        lastmod: 1759775656037
         uid: mWNtnr5ncttJP5
         behaviors:
           - tL8L74bG19RKmN
@@ -830,22 +832,30 @@ assets:
         behaviorType: template
         events:
           - eventKey: OnActionPress
-            code: 'appendCombo("w", this.combo, this.comboMaxLen);'
+            code: |-
+              appendCombo("w", this.combo, this.comboMaxLen);
+              console.log(this.combo);
             arguments:
               action: W
             lib: core
           - eventKey: OnActionPress
-            code: 'appendCombo("a", this.combo, this.comboMaxLen);'
+            code: |-
+              appendCombo("a", this.combo, this.comboMaxLen);
+              console.log(this.combo);
             arguments:
               action: A
             lib: core
           - eventKey: OnActionPress
-            code: 'appendCombo("s", this.combo, this.comboMaxLen);'
+            code: |-
+              appendCombo("s", this.combo, this.comboMaxLen);
+              console.log(this.combo);
             arguments:
               action: S
             lib: core
           - eventKey: OnActionPress
-            code: 'appendCombo("d", this.combo, this.comboMaxLen);'
+            code: |-
+              appendCombo("d", this.combo, this.comboMaxLen);
+              console.log(this.combo);
             arguments:
               action: D
             lib: core
@@ -923,7 +933,7 @@ assets:
             required: false
             fixedLength: 0
         extendTypes: ''
-        lastmod: 1759772437320
+        lastmod: 1759777105496
         uid: dHtwh8wh7QdhrQ
       - type: template
         baseClass: AnimatedSprite
@@ -945,7 +955,8 @@ assets:
             lib: core
         extends:
           cgroup: ''
-        lastmod: 1759770192406
+          alpha: 0
+        lastmod: 1759775911873
         uid: dwHzdDdmbjQ63J
         behaviors: []
         extendTypes: ''
@@ -1388,59 +1399,6 @@ assets:
     name: Sounds
     lastmod: 1759596068845
     entries:
-      - name: s1
-        uid: 2n32prWLKBfkk6
-        type: sound
-        lastmod: 1759597393809
-        preload: true
-        variants:
-          - uid: jgdtCt62jNqkdK
-            source: 'C:\Users\User\AppData\Local\Temp\ctjs-Wa4dQy\recording.mp3'
-        distortion:
-          enabled: false
-          min: 0
-          max: 1
-        pitch:
-          enabled: false
-          min: 0
-          max: 1
-        reverb:
-          enabled: false
-          decayMin: 2
-          decayMax: 2
-          secondsMin: 2
-          secondsMax: 3
-          reverse: false
-        volume:
-          enabled: false
-          min: 0
-          max: 1
-        eq:
-          enabled: false
-          bands:
-            - min: -1
-              max: 1
-            - min: -1
-              max: 1
-            - min: -1
-              max: 1
-            - min: -1
-              max: 1
-            - min: -1
-              max: 1
-            - min: -1
-              max: 1
-            - min: -1
-              max: 1
-            - min: -1
-              max: 1
-            - min: -1
-              max: 1
-            - min: -1
-              max: 1
-        panning:
-          refDistance: 0.5
-          rolloffFactor: 1
       - type: folder
         uid: 6jBHNDB16RwFGn
         colorClass: act
@@ -1451,15 +1409,12 @@ assets:
           - name: w-sound
             uid: gw4CQCT3rJftgb
             type: sound
-            lastmod: 1759659844379
+            lastmod: 1759776920629
             preload: true
             variants:
-              - uid: hh5tnHBLgKhnF2
-                source: /tmp/ctjs-vAVu7t/recording.mp3
-              - uid: MKzk8DG7pDDG83
-                source: /tmp/ctjs-4AmRDU/recording.mp3
-              - uid: RRfnGPTQFPC4LK
-                source: /tmp/ctjs-AAC1VS/recording.mp3
+              - uid: P3Rk6h4hwpwpbH
+                source: >-
+                  /home/avenger/GitHub/adettori/ludum-dare-58/Assets/Sounds/up.mp3
             distortion:
               enabled: false
               min: 0
@@ -1508,15 +1463,12 @@ assets:
           - name: a-sound
             uid: Bf3rtgB1TnL9f5
             type: sound
-            lastmod: 1759659933401
+            lastmod: 1759776889612
             preload: true
             variants:
-              - uid: PfqwjCdcwJcWpP
-                source: /tmp/ctjs-WkHQmq/recording.mp3
-              - uid: HN15KF6BFN3zbC
-                source: /tmp/ctjs-j8xYed/recording.mp3
-              - uid: H9wLjFmfk7M56q
-                source: /tmp/ctjs-fMjg2E/recording.mp3
+              - uid: LJ476tw3RGRqCz
+                source: >-
+                  /home/avenger/GitHub/adettori/ludum-dare-58/Assets/Sounds/left.mp3
             distortion:
               enabled: false
               min: 0
@@ -1565,15 +1517,12 @@ assets:
           - name: d-sound
             uid: F7pdC8qNCgjp77
             type: sound
-            lastmod: 1759660090651
+            lastmod: 1759776899047
             preload: true
             variants:
-              - uid: w4FRMknWr3hLRQ
-                source: /tmp/ctjs-ws35xy/recording.mp3
-              - uid: 7gM8JrD71W85pC
-                source: /tmp/ctjs-GhatmL/recording.mp3
-              - uid: KJ7qHkRh6q7TGJ
-                source: /tmp/ctjs-Uj6Sik/recording.mp3
+              - uid: 5rHnbw4TJLFDcz
+                source: >-
+                  /home/avenger/GitHub/adettori/ludum-dare-58/Assets/Sounds/right.mp3
             distortion:
               enabled: false
               min: 0
@@ -1622,15 +1571,12 @@ assets:
           - name: s-sound
             uid: 6b516R53qHPcT5
             type: sound
-            lastmod: 1759660040191
+            lastmod: 1759776909403
             preload: true
             variants:
-              - uid: CtBg5HFGRCjRfN
-                source: /tmp/ctjs-haryeL/recording.mp3
-              - uid: C7zfMwcBCzzjRG
-                source: /tmp/ctjs-1WvSV8/recording.mp3
-              - uid: NPkfmBDD1TLt2F
-                source: /tmp/ctjs-cTIKuI/recording.mp3
+              - uid: F2bC991fcRR8Tz
+                source: >-
+                  /home/avenger/GitHub/adettori/ludum-dare-58/Assets/Sounds/down.mp3
             distortion:
               enabled: false
               min: 0
@@ -1676,16 +1622,232 @@ assets:
             panning:
               refDistance: 0.5
               rolloffFactor: 1
+      - name: Cockatiel
+        uid: C3FJ3qkp5Lk968
+        type: sound
+        lastmod: 1759775562533
+        preload: true
+        variants:
+          - uid: k2zKQPwdb53Lbg
+            source: >-
+              /home/avenger/GitHub/adettori/ludum-dare-58/Assets/Sounds/cockatiel.mp3
+        distortion:
+          enabled: false
+          min: 0
+          max: 1
+        pitch:
+          enabled: false
+          min: 0
+          max: 1
+        reverb:
+          enabled: false
+          decayMin: 2
+          decayMax: 2
+          secondsMin: 2
+          secondsMax: 3
+          reverse: false
+        volume:
+          enabled: false
+          min: 0
+          max: 1
+        eq:
+          enabled: false
+          bands:
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+        panning:
+          refDistance: 0.5
+          rolloffFactor: 1
+      - name: Buzzard
+        uid: n5962kjp6mqJPf
+        type: sound
+        lastmod: 1759775583132
+        preload: true
+        variants:
+          - uid: QBjPCRpd7qBh66
+            source: >-
+              /home/avenger/GitHub/adettori/ludum-dare-58/Assets/Sounds/buzzard.mp3
+        distortion:
+          enabled: false
+          min: 0
+          max: 1
+        pitch:
+          enabled: false
+          min: 0
+          max: 1
+        reverb:
+          enabled: false
+          decayMin: 2
+          decayMax: 2
+          secondsMin: 2
+          secondsMax: 3
+          reverse: false
+        volume:
+          enabled: false
+          min: 0
+          max: 1
+        eq:
+          enabled: false
+          bands:
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+        panning:
+          refDistance: 0.5
+          rolloffFactor: 1
+      - name: Cuckoo
+        uid: 1r7KJfPz1hz6Gr
+        type: sound
+        lastmod: 1759775606047
+        preload: true
+        variants:
+          - uid: m3gk55qbmkNCcH
+            source: >-
+              /home/avenger/GitHub/adettori/ludum-dare-58/Assets/Sounds/cuckoo.mp3
+        distortion:
+          enabled: false
+          min: 0
+          max: 1
+        pitch:
+          enabled: false
+          min: 0
+          max: 1
+        reverb:
+          enabled: false
+          decayMin: 2
+          decayMax: 2
+          secondsMin: 2
+          secondsMax: 3
+          reverse: false
+        volume:
+          enabled: false
+          min: 0
+          max: 1
+        eq:
+          enabled: false
+          bands:
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+        panning:
+          refDistance: 0.5
+          rolloffFactor: 1
+      - name: Blackbird
+        uid: RWGbc3NQ9rLrgC
+        type: sound
+        lastmod: 1759775624624
+        preload: true
+        variants:
+          - uid: Qn45j5QJBLm6t1
+            source: >-
+              /home/avenger/GitHub/adettori/ludum-dare-58/Assets/Sounds/blackbird.mp3
+        distortion:
+          enabled: false
+          min: 0
+          max: 1
+        pitch:
+          enabled: false
+          min: 0
+          max: 1
+        reverb:
+          enabled: false
+          decayMin: 2
+          decayMax: 2
+          secondsMin: 2
+          secondsMax: 3
+          reverse: false
+        volume:
+          enabled: false
+          min: 0
+          max: 1
+        eq:
+          enabled: false
+          bands:
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+            - min: -1
+              max: 1
+        panning:
+          refDistance: 0.5
+          rolloffFactor: 1
   - type: behavior
     name: ComboLogic
     behaviorType: room
     events:
       - eventKey: OnRoomStart
         code: |-
-          this.combo_bird["Cuckoo"] = "wasd"
-          this.combo_bird["Cockatiel"] = "asdw"
-          this.combo_bird["Blackbird"] = "sdwa"
-          this.combo_bird["Buzzard"] = "dwas"
+          this.combo_bird["Cuckoo"] = "aas"
+          this.combo_bird["Cockatiel"] = "adasw"
+          this.combo_bird["Blackbird"] = "wsaaa"
+          this.combo_bird["Buzzard"] = "wdwd"
         arguments: {}
         lib: core
       - eventKey: OnDraw
@@ -1695,47 +1857,53 @@ assets:
 
           if(templates_list.length == 1) {
               var dpad = templates_list[0]; // First and only element
+              var potentialFutureCombo = false;
+              
+              for (const bird in birds_object) {
+                  var combo_array = this.combo_bird[bird];
+                  var compareBool = true;
+                  var lenToCompare = Math.min(combo_array.length, dpad.combo.length);
 
-              // Only check if the combo is complete ie 4 length
-              if(dpad.combo.length == dpad.comboMaxLen) {
-                  for (const bird in birds_object) {
-                      var combo_array = this.combo_bird[bird];
-                      var compareBool = true;
-
-                      // Match combo
-                      for(var i=0;i<dpad.comboMaxLen;i++) {
-                          compareBool = compareBool && combo_array[i] == dpad.combo[i];
-                      }
-
-                      // Combos match
-                      if(compareBool) {
-                          var bird_list = templates.list[bird]
-                          var eligible_birds = []
-
-                          for(const bird in bird_list) {
-                              if(!bird_list[bird].isOnPhotoSpot)
-                                  eligible_birds.push(bird_list[bird]);
-                          }
-
-                          var target_bird = eligible_birds[randIndex(eligible_birds.length)];
-                          var target_spot = getPhotoSpot();
-
-                          // Check if spot found is valid
-                          if(target_spot[0] != -1 && target_spot[1] != -1) {
-                              togglePhotoSpot(target_spot[0], target_spot[1]);
-                              // Set next target
-                              target_bird.targetSpotX = target_spot[0];
-                              target_bird.targetSpotY = target_spot[1];
-                              target_bird.direction = u.direction(target_bird, {x: target_bird.targetSpotX, y:target_bird.targetSpotY});
-                              target_bird.isOnPhotoSpot = true;
-                              dpad.photoAlreadyTriggered = false;
-                          }
-
-                          // Reset combo
-                          dpad.combo.length = 0;
-                          break;
-                      }
+                  // Match combo
+                  for(var i=0;i<lenToCompare;i++) {
+                      compareBool = compareBool && combo_array[i] == dpad.combo[i];
                   }
+                  potentialFutureCombo = potentialFutureCombo || compareBool;
+
+                  // Combos match
+                  if(compareBool && dpad.combo.length >= combo_array.length) {
+                      var bird_list = templates.list[bird]
+                      var eligible_birds = []
+
+                      for(const bird in bird_list) {
+                          if(!bird_list[bird].isOnPhotoSpot)
+                              eligible_birds.push(bird_list[bird]);
+                      }
+
+                      var target_bird = eligible_birds[randIndex(eligible_birds.length)];
+                      var target_spot = getPhotoSpot();
+
+                      // Check if spot found is valid
+                      if(target_spot[0] != -1 && target_spot[1] != -1) {
+                          togglePhotoSpot(target_spot[0], target_spot[1]);
+                          console.log(eligible_birds);
+                          // Set next target
+                          target_bird.targetSpotX = target_spot[0];
+                          target_bird.targetSpotY = target_spot[1];
+                          target_bird.direction = u.direction(target_bird, {x: target_bird.targetSpotX, y:target_bird.targetSpotY});
+                          target_bird.isOnPhotoSpot = true;
+                          dpad.photoAlreadyTriggered = false;
+                      }
+
+                      // Reset combo
+                      dpad.combo.length = 0;
+                      break;
+                  }
+              }
+
+              if(!potentialFutureCombo) {
+                  // Reset combo
+                  dpad.combo.length = 0;
               }
           } else {
               console.log("Error: incorrect amount of dpads detected, should be 1: " + templates_list.length);
@@ -1751,7 +1919,7 @@ assets:
         required: true
         fixedLength: 0
     extendTypes: ''
-    lastmod: 1759772156150
+    lastmod: 1759777151582
     uid: nFb4kRtrq2ptPQ
   - type: folder
     uid: 5LfBTg9mH4CK2r
@@ -2032,11 +2200,11 @@ assets:
             bird_C: ASDW
             bird_D: WSSA
           combo_bird:
-            Bird_A: ''
-            Bird_B: ''
-            Bird_C: ''
-            Bird_D: ''
-        lastmod: 1759770698723
+            Blackbird: ''
+            Cuckoo: ''
+            Buzzard: ''
+            Cockatiel: ''
+        lastmod: 1759776826206
         events: []
         behaviors:
           - nFb4kRtrq2ptPQ
@@ -2076,13 +2244,13 @@ assets:
             scaleY: 1
             repeat: no-repeat
         copies:
-          - x: 978.5
-            'y': 550.75
+          - x: 992
+            'y': 544
             opacity: 0
             tint: 16777215
             scale:
-              x: 50.8125
-              'y': 13.84375
+              x: 52
+              'y': 12
             rotation: 0
             uid: dwHzdDdmbjQ63J
             exts: {}
@@ -2090,7 +2258,7 @@ assets:
             bindings: {}
         tiles: []
         extends: {}
-        lastmod: 1759765704901
+        lastmod: 1759776778796
         events: []
         behaviors: []
         extendTypes: ''
