@@ -6,7 +6,8 @@ libs:
   place:
     gridX: 1024
     gridY: 1024
-  pointer: {}
+  pointer:
+    startlocked: false
   keyboard: {}
   keyboard.polyfill: {}
   pointer.polyfill: {}
@@ -822,7 +823,7 @@ assets:
           comboMaxLen: 0
           photoOnScreen: false
           photoAlreadyTriggered: ''
-        lastmod: 1759770164611
+        lastmod: 1759784821232
         uid: 4Qw6bgfwpMH34J
         behaviors:
           - dHtwh8wh7QdhrQ
@@ -911,7 +912,7 @@ assets:
                       allCaptured = allCaptured && rooms.list["MainScene"][0].bird_captured[bird];
                   }
                   if(allCaptured)
-                      templates.copy("WinView", camera.width/5, camera.height/5);
+                      templates.copy("WinView", camera.width/2, camera.height/2);
               }
             arguments:
               action: Capture
@@ -946,30 +947,28 @@ assets:
             required: false
             fixedLength: 0
         extendTypes: ''
-        lastmod: 1759777105496
+        lastmod: 1759785775240
         uid: dHtwh8wh7QdhrQ
       - type: template
         baseClass: AnimatedSprite
         name: PlayButton
         depth: 0
-        texture: 3k1H1q97FLTFrW
+        texture: PmWj5wcd6dww63
         playAnimationOnStart: false
         loopAnimation: true
         animationFPS: 30
         visible: true
         events:
-          - eventKey: OnStep
-            lib: core
-            code: this.move();
-            arguments: {}
           - eventKey: OnPointerClick
-            code: rooms.switch('MainScene');
+            code: |-
+              rooms.switch('MainScene');
+              console.log("Click!")
             arguments: {}
             lib: core
         extends:
           cgroup: ''
           alpha: 0
-        lastmod: 1759775911873
+        lastmod: 1759784803015
         uid: dwHzdDdmbjQ63J
         behaviors: []
         extendTypes: ''
@@ -990,26 +989,22 @@ assets:
         behaviors: []
         extendTypes: ''
       - type: template
-        baseClass: Text
+        baseClass: AnimatedSprite
         name: HelpButton
         depth: 0
-        texture: -1
+        texture: PmWj5wcd6dww63
         playAnimationOnStart: false
         loopAnimation: true
         animationFPS: 30
         visible: true
         events:
-          - eventKey: OnPointerEnter
-            code: 'templates.copy("HelpView", camera.width/5, camera.height/5);'
-            arguments: {}
-            lib: core
-          - eventKey: OnPointerLeave
-            code: 'templates.list["HelpView"][0].kill = true;'
+          - eventKey: OnPointerClick
+            code: 'templates.copy("HelpView", camera.width/2, camera.height/2);'
             arguments: {}
             lib: core
         extends:
           cgroup: ''
-        lastmod: 1759780713322
+        lastmod: 1759784839130
         uid: pj5NG79TQW1w3c
         behaviors: []
         extendTypes: ''
@@ -1027,7 +1022,7 @@ assets:
         events: []
         extends:
           cgroup: ''
-        lastmod: 1759779013145
+        lastmod: 1759784466156
         uid: 5KnzgMdkC8MFTt
         behaviors: []
         extendTypes: ''
@@ -1045,6 +1040,84 @@ assets:
           cgroup: ''
         lastmod: 1759780094120
         uid: 3tmkq9rr9cczL3
+        behaviors: []
+        extendTypes: ''
+      - type: template
+        baseClass: AnimatedSprite
+        name: HelpBackButton
+        depth: 0
+        texture: PmWj5wcd6dww63
+        playAnimationOnStart: false
+        loopAnimation: true
+        animationFPS: 30
+        visible: true
+        events:
+          - eventKey: OnPointerClick
+            code: 'templates.list["HelpView"][0].kill = true;'
+            arguments: {}
+            lib: core
+        extends:
+          cgroup: ''
+        lastmod: 1759784831461
+        uid: 1mp7Hg7rc2rQjp
+        behaviors: []
+        extendTypes: ''
+      - type: template
+        baseClass: AnimatedSprite
+        name: CreditsButton
+        depth: 0
+        texture: PmWj5wcd6dww63
+        playAnimationOnStart: false
+        loopAnimation: true
+        animationFPS: 30
+        visible: true
+        events:
+          - eventKey: OnPointerClick
+            code: 'templates.copy("CreditsView", camera.width/2, camera.height/2);'
+            arguments: {}
+            lib: core
+        extends:
+          cgroup: ''
+        lastmod: 1759784816521
+        uid: cmF3MhQ3qwQt8B
+        behaviors: []
+        extendTypes: ''
+        defaultText: ''
+        textStyle: -1
+      - type: template
+        baseClass: AnimatedSprite
+        name: CreditsBackButton
+        depth: 0
+        texture: PmWj5wcd6dww63
+        playAnimationOnStart: false
+        loopAnimation: true
+        animationFPS: 30
+        visible: true
+        events:
+          - eventKey: OnPointerClick
+            code: 'templates.list["CreditsView"][0].kill = true;'
+            arguments: {}
+            lib: core
+        extends:
+          cgroup: ''
+        lastmod: 1759784811570
+        uid: Bk9DNCD5C925kL
+        behaviors: []
+        extendTypes: ''
+      - type: template
+        baseClass: AnimatedSprite
+        name: CreditsView
+        depth: 0
+        texture: r5qr5q1BTCP19D
+        playAnimationOnStart: false
+        loopAnimation: true
+        animationFPS: 30
+        visible: true
+        events: []
+        extends:
+          cgroup: ''
+        lastmod: 1759784490207
+        uid: bGz4M72Wf2RnhN
         behaviors: []
         extendTypes: ''
   - type: folder
@@ -1154,7 +1227,7 @@ assets:
         isBlank: false
         source: /home/avenger/GitHub/adettori/ludum-dare-58/Assets/BackgroundMain.png
         tiled: true
-      - lastmod: 1759763577028
+      - lastmod: 1759783963396
         type: texture
         name: MainMenu
         untill: 0
@@ -1162,8 +1235,8 @@ assets:
           - 1
           - 1
         axis:
-          - 0
-          - 0
+          - 960
+          - 540
         marginx: 0
         marginy: 0
         imgWidth: 1920
@@ -1174,14 +1247,15 @@ assets:
         offy: 0
         origname: iNBGkpP64BHGpkH.png
         shape: rect
-        left: 0
-        right: 1920
-        top: 0
-        bottom: 1080
+        left: 960
+        right: 960
+        top: 540
+        bottom: 540
         uid: NBGkpP64BHGpkH
         padding: 1
         isBlank: false
-        source: /home/avenger/GitHub/adettori/ludum-dare-58/Assets/ExampleMenu.png
+        source: >-
+          C:\Users\User\Documents\GitHub\ludum-dare-58\Assets\Art\BackgroundMenu_title.png
         tiled: true
       - type: folder
         uid: Gd98BHMnzrNHTz
@@ -1463,62 +1537,147 @@ assets:
             isBlank: false
             source: >-
               C:\Users\User\Documents\GitHub\ludum-dare-58\Assets\Card_Cuckoo.png
-      - lastmod: 1759778893263
+      - lastmod: 1759785505542
         type: texture
-        name: Help
+        name: ScreenHelp
         untill: 0
         grid:
           - 1
           - 1
         axis:
-          - 0
-          - 0
+          - 960
+          - 540
         marginx: 0
         marginy: 0
-        imgWidth: 1280
-        imgHeight: 720
-        width: 1280
-        height: 720
+        imgWidth: 1920
+        imgHeight: 1080
+        width: 1920
+        height: 1080
         offx: 0
         offy: 0
         origname: i9cJQPr9qp2hGTg.png
         shape: rect
-        left: 0
-        right: 1280
-        top: 0
-        bottom: 720
+        left: 960
+        right: 960
+        top: 540
+        bottom: 540
         uid: 9cJQPr9qp2hGTg
         padding: 1
         isBlank: false
-        source: /home/avenger/GitHub/adettori/ludum-dare-58/Assets/Art/Help.png
-      - lastmod: 1759780081647
+        source: 'C:\Users\User\Documents\GitHub\ludum-dare-58\Assets\Art\ScreenHelp.png'
+      - lastmod: 1759783193821
         type: texture
-        name: Win
+        name: ScreenWin
         untill: 0
         grid:
           - 1
           - 1
         axis:
-          - 0
-          - 0
+          - 960
+          - 540
         marginx: 0
         marginy: 0
-        imgWidth: 1280
-        imgHeight: 720
-        width: 1280
-        height: 720
+        imgWidth: 1920
+        imgHeight: 1080
+        width: 1920
+        height: 1080
         offx: 0
         offy: 0
         origname: iHmCRfdh22crQpt.png
         shape: rect
-        left: 0
-        right: 1280
-        top: 0
-        bottom: 720
+        left: 960
+        right: 960
+        top: 540
+        bottom: 540
         uid: HmCRfdh22crQpt
         padding: 1
         isBlank: false
-        source: /home/avenger/GitHub/adettori/ludum-dare-58/Assets/Art/Win.png
+        source: 'C:\Users\User\Documents\GitHub\ludum-dare-58\Assets\Art\ScreenWin.png'
+      - lastmod: 1759782993582
+        type: texture
+        name: GameIcon
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 128
+          - 128
+        marginx: 0
+        marginy: 0
+        imgWidth: 256
+        imgHeight: 256
+        width: 256
+        height: 256
+        offx: 0
+        offy: 0
+        origname: im3JWGbnt1fK2nr.png
+        shape: rect
+        left: 128
+        right: 128
+        top: 128
+        bottom: 128
+        uid: m3JWGbnt1fK2nr
+        padding: 1
+        isBlank: false
+        source: 'C:\Users\User\Documents\GitHub\ludum-dare-58\Assets\Art\GameIcon.png'
+      - lastmod: 1759785513682
+        type: texture
+        name: ScreenCredits
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 960
+          - 540
+        marginx: 0
+        marginy: 0
+        imgWidth: 1920
+        imgHeight: 1080
+        width: 1920
+        height: 1080
+        offx: 0
+        offy: 0
+        origname: ir5qr5q1BTCP19D.png
+        shape: rect
+        left: 960
+        right: 960
+        top: 540
+        bottom: 540
+        uid: r5qr5q1BTCP19D
+        padding: 1
+        isBlank: false
+        source: >-
+          C:\Users\User\Documents\GitHub\ludum-dare-58\Assets\Art\ScreenCredits.png
+      - lastmod: 1759784795060
+        type: texture
+        name: empty
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 256
+          - 128
+        marginx: 0
+        marginy: 0
+        imgWidth: 512
+        imgHeight: 256
+        width: 512
+        height: 256
+        offx: 0
+        offy: 0
+        origname: iPmWj5wcd6dww63.png
+        shape: rect
+        left: 256
+        right: 256
+        top: 128
+        bottom: 128
+        uid: PmWj5wcd6dww63
+        padding: 1
+        isBlank: false
+        source: 'C:\Users\User\Documents\GitHub\ludum-dare-58\Assets\empty.png'
   - type: folder
     uid: 7MGK85gGf2PfkJ
     colorClass: success
@@ -1749,222 +1908,229 @@ assets:
             panning:
               refDistance: 0.5
               rolloffFactor: 1
-      - name: Cockatiel
-        uid: C3FJ3qkp5Lk968
-        type: sound
-        lastmod: 1759775562533
-        preload: true
-        variants:
-          - uid: k2zKQPwdb53Lbg
-            source: >-
-              /home/avenger/GitHub/adettori/ludum-dare-58/Assets/Sounds/cockatiel.mp3
-        distortion:
-          enabled: false
-          min: 0
-          max: 1
-        pitch:
-          enabled: false
-          min: 0
-          max: 1
-        reverb:
-          enabled: false
-          decayMin: 2
-          decayMax: 2
-          secondsMin: 2
-          secondsMax: 3
-          reverse: false
-        volume:
-          enabled: false
-          min: 0
-          max: 1
-        eq:
-          enabled: false
-          bands:
-            - min: -1
+      - type: folder
+        uid: tMfkcTCM6JNjKJ
+        colorClass: act
+        icon: headphones
+        name: BirdSounds
+        lastmod: 1759781157459
+        entries:
+          - name: Blackbird
+            uid: RWGbc3NQ9rLrgC
+            type: sound
+            lastmod: 1759775624624
+            preload: true
+            variants:
+              - uid: Qn45j5QJBLm6t1
+                source: >-
+                  /home/avenger/GitHub/adettori/ludum-dare-58/Assets/Sounds/blackbird.mp3
+            distortion:
+              enabled: false
+              min: 0
               max: 1
-            - min: -1
+            pitch:
+              enabled: false
+              min: 0
               max: 1
-            - min: -1
+            reverb:
+              enabled: false
+              decayMin: 2
+              decayMax: 2
+              secondsMin: 2
+              secondsMax: 3
+              reverse: false
+            volume:
+              enabled: false
+              min: 0
               max: 1
-            - min: -1
+            eq:
+              enabled: false
+              bands:
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+            panning:
+              refDistance: 0.5
+              rolloffFactor: 1
+          - name: Buzzard
+            uid: n5962kjp6mqJPf
+            type: sound
+            lastmod: 1759775583132
+            preload: true
+            variants:
+              - uid: QBjPCRpd7qBh66
+                source: >-
+                  /home/avenger/GitHub/adettori/ludum-dare-58/Assets/Sounds/buzzard.mp3
+            distortion:
+              enabled: false
+              min: 0
               max: 1
-            - min: -1
+            pitch:
+              enabled: false
+              min: 0
               max: 1
-            - min: -1
+            reverb:
+              enabled: false
+              decayMin: 2
+              decayMax: 2
+              secondsMin: 2
+              secondsMax: 3
+              reverse: false
+            volume:
+              enabled: false
+              min: 0
               max: 1
-            - min: -1
+            eq:
+              enabled: false
+              bands:
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+            panning:
+              refDistance: 0.5
+              rolloffFactor: 1
+          - name: Cockatiel
+            uid: C3FJ3qkp5Lk968
+            type: sound
+            lastmod: 1759775562533
+            preload: true
+            variants:
+              - uid: k2zKQPwdb53Lbg
+                source: >-
+                  /home/avenger/GitHub/adettori/ludum-dare-58/Assets/Sounds/cockatiel.mp3
+            distortion:
+              enabled: false
+              min: 0
               max: 1
-            - min: -1
+            pitch:
+              enabled: false
+              min: 0
               max: 1
-            - min: -1
+            reverb:
+              enabled: false
+              decayMin: 2
+              decayMax: 2
+              secondsMin: 2
+              secondsMax: 3
+              reverse: false
+            volume:
+              enabled: false
+              min: 0
               max: 1
-            - min: -1
+            eq:
+              enabled: false
+              bands:
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+            panning:
+              refDistance: 0.5
+              rolloffFactor: 1
+          - name: Cuckoo
+            uid: 1r7KJfPz1hz6Gr
+            type: sound
+            lastmod: 1759775606047
+            preload: true
+            variants:
+              - uid: m3gk55qbmkNCcH
+                source: >-
+                  /home/avenger/GitHub/adettori/ludum-dare-58/Assets/Sounds/cuckoo.mp3
+            distortion:
+              enabled: false
+              min: 0
               max: 1
-        panning:
-          refDistance: 0.5
-          rolloffFactor: 1
-      - name: Buzzard
-        uid: n5962kjp6mqJPf
-        type: sound
-        lastmod: 1759775583132
-        preload: true
-        variants:
-          - uid: QBjPCRpd7qBh66
-            source: >-
-              /home/avenger/GitHub/adettori/ludum-dare-58/Assets/Sounds/buzzard.mp3
-        distortion:
-          enabled: false
-          min: 0
-          max: 1
-        pitch:
-          enabled: false
-          min: 0
-          max: 1
-        reverb:
-          enabled: false
-          decayMin: 2
-          decayMax: 2
-          secondsMin: 2
-          secondsMax: 3
-          reverse: false
-        volume:
-          enabled: false
-          min: 0
-          max: 1
-        eq:
-          enabled: false
-          bands:
-            - min: -1
+            pitch:
+              enabled: false
+              min: 0
               max: 1
-            - min: -1
+            reverb:
+              enabled: false
+              decayMin: 2
+              decayMax: 2
+              secondsMin: 2
+              secondsMax: 3
+              reverse: false
+            volume:
+              enabled: false
+              min: 0
               max: 1
-            - min: -1
-              max: 1
-            - min: -1
-              max: 1
-            - min: -1
-              max: 1
-            - min: -1
-              max: 1
-            - min: -1
-              max: 1
-            - min: -1
-              max: 1
-            - min: -1
-              max: 1
-            - min: -1
-              max: 1
-        panning:
-          refDistance: 0.5
-          rolloffFactor: 1
-      - name: Cuckoo
-        uid: 1r7KJfPz1hz6Gr
-        type: sound
-        lastmod: 1759775606047
-        preload: true
-        variants:
-          - uid: m3gk55qbmkNCcH
-            source: >-
-              /home/avenger/GitHub/adettori/ludum-dare-58/Assets/Sounds/cuckoo.mp3
-        distortion:
-          enabled: false
-          min: 0
-          max: 1
-        pitch:
-          enabled: false
-          min: 0
-          max: 1
-        reverb:
-          enabled: false
-          decayMin: 2
-          decayMax: 2
-          secondsMin: 2
-          secondsMax: 3
-          reverse: false
-        volume:
-          enabled: false
-          min: 0
-          max: 1
-        eq:
-          enabled: false
-          bands:
-            - min: -1
-              max: 1
-            - min: -1
-              max: 1
-            - min: -1
-              max: 1
-            - min: -1
-              max: 1
-            - min: -1
-              max: 1
-            - min: -1
-              max: 1
-            - min: -1
-              max: 1
-            - min: -1
-              max: 1
-            - min: -1
-              max: 1
-            - min: -1
-              max: 1
-        panning:
-          refDistance: 0.5
-          rolloffFactor: 1
-      - name: Blackbird
-        uid: RWGbc3NQ9rLrgC
-        type: sound
-        lastmod: 1759775624624
-        preload: true
-        variants:
-          - uid: Qn45j5QJBLm6t1
-            source: >-
-              /home/avenger/GitHub/adettori/ludum-dare-58/Assets/Sounds/blackbird.mp3
-        distortion:
-          enabled: false
-          min: 0
-          max: 1
-        pitch:
-          enabled: false
-          min: 0
-          max: 1
-        reverb:
-          enabled: false
-          decayMin: 2
-          decayMax: 2
-          secondsMin: 2
-          secondsMax: 3
-          reverse: false
-        volume:
-          enabled: false
-          min: 0
-          max: 1
-        eq:
-          enabled: false
-          bands:
-            - min: -1
-              max: 1
-            - min: -1
-              max: 1
-            - min: -1
-              max: 1
-            - min: -1
-              max: 1
-            - min: -1
-              max: 1
-            - min: -1
-              max: 1
-            - min: -1
-              max: 1
-            - min: -1
-              max: 1
-            - min: -1
-              max: 1
-            - min: -1
-              max: 1
-        panning:
-          refDistance: 0.5
-          rolloffFactor: 1
+            eq:
+              enabled: false
+              bands:
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+                - min: -1
+                  max: 1
+            panning:
+              refDistance: 0.5
+              rolloffFactor: 1
   - type: folder
     uid: 5LfBTg9mH4CK2r
     colorClass: accent1
@@ -2253,7 +2419,7 @@ assets:
             Cockatiel: false
             Buzzard: false
             Blackbird: false
-        lastmod: 1759780725447
+        lastmod: 1759781453707
         events: []
         behaviors:
           - nFb4kRtrq2ptPQ
@@ -2293,33 +2459,81 @@ assets:
             scaleY: 1
             repeat: no-repeat
         copies:
-          - x: 992
-            'y': 544
-            opacity: 0
-            tint: 16777215
-            scale:
-              x: 52
-              'y': 12
-            rotation: 0
-            uid: dwHzdDdmbjQ63J
-            exts: {}
-            customProperties: {}
-            bindings: {}
-          - x: 832
-            'y': 704
+          - x: 1760
+            'y': 512
             opacity: 1
             tint: 16777215
             scale:
-              x: 4.74074074
-              'y': 4.4137931
+              x: 0.625
+              'y': 0.5
             rotation: 0
             uid: pj5NG79TQW1w3c
             exts: {}
             customProperties: {}
             bindings: {}
+          - x: 1696
+            'y': 544
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 0.375
+              'y': 0.25
+            rotation: 0
+            uid: pj5NG79TQW1w3c
+            exts: {}
+            customProperties: {}
+            bindings: {}
+          - x: 256
+            'y': 544
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 0.5
+              'y': 0.25
+            rotation: 0
+            uid: cmF3MhQ3qwQt8B
+            exts: {}
+            customProperties: {}
+            bindings: {}
+          - x: 960
+            'y': 512
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 0.75
+              'y': 1.5
+            rotation: 0
+            uid: dwHzdDdmbjQ63J
+            exts: {}
+            customProperties: {}
+            bindings: {}
+          - x: 192
+            'y': 960
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            rotation: 0
+            uid: 1mp7Hg7rc2rQjp
+            exts: {}
+            customProperties: {}
+            bindings: {}
+          - x: 1728
+            'y': 960
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            rotation: 0
+            uid: Bk9DNCD5C925kL
+            exts: {}
+            customProperties: {}
+            bindings: {}
         tiles: []
         extends: {}
-        lastmod: 1759779174728
+        lastmod: 1759785552377
         events: []
         behaviors: []
         extendTypes: ''
@@ -2412,14 +2626,14 @@ assets:
             required: true
             fixedLength: 0
         extendTypes: ''
-        lastmod: 1759780009350
+        lastmod: 1759782759484
         uid: nFb4kRtrq2ptPQ
 globalVars: []
 settings:
   authoring:
     author: fiordarancio;hippity-hoppity;ste-dtst
     site: ''
-    title: Collector
+    title: BirbDex
     version:
       - 0
       - 0
@@ -2458,9 +2672,9 @@ settings:
       script: false
       enum: false
   branding:
-    accent: '#446adb'
+    accent: '#D78258'
     invertPreloaderScheme: true
-    icon: -1
+    icon: m3JWGbnt1fK2nr
     splashScreen: -1
     forceSmoothIcons: false
     forceSmoothSplashScreen: false
