@@ -886,12 +886,14 @@ assets:
                                   card.textures = res.getTexture(`Card_${photoBird.birdType}`);
                                   this.photoOnScreen = true;
                                   this.photoAlreadyTriggered = true;
-                              } else {
+                              } else if(photoBird.isOnPhotoSpot) {
+                                  togglePhotoSpot(photoBird.targetSpotX, photoBird.targetSpotY);
                                   var spot = nextTreeSpot(photoBird.position.x, photoBird.position.y);
                                   photoBird.targetSpotX = spot[0];
                                   photoBird.targetSpotY = spot[1];
                                   // Get direction
                                   photoBird.direction = u.direction(photoBird, {x: photoBird.targetSpotX, y:photoBird.targetSpotY});
+                                  photoBird.isOnPhotoSpot = false;
                               }
                           }
                       }
@@ -974,6 +976,48 @@ assets:
           cgroup: ''
         lastmod: 1759772524963
         uid: K4HCpn3qDmDwpc
+        behaviors: []
+        extendTypes: ''
+      - type: template
+        baseClass: Text
+        name: HelpButton
+        depth: 0
+        texture: -1
+        playAnimationOnStart: false
+        loopAnimation: true
+        animationFPS: 30
+        visible: true
+        events:
+          - eventKey: OnPointerEnter
+            code: 'templates.copy("HelpView", camera.width/5, camera.height/5);'
+            arguments: {}
+            lib: core
+          - eventKey: OnPointerLeave
+            code: 'templates.list["HelpView"][0].kill = true;'
+            arguments: {}
+            lib: core
+        extends:
+          cgroup: ''
+        lastmod: 1759779417293
+        uid: pj5NG79TQW1w3c
+        behaviors: []
+        extendTypes: ''
+        defaultText: ''
+        textStyle: -1
+      - type: template
+        baseClass: AnimatedSprite
+        name: HelpView
+        depth: 0
+        texture: 9cJQPr9qp2hGTg
+        playAnimationOnStart: false
+        loopAnimation: true
+        animationFPS: 30
+        visible: true
+        events: []
+        extends:
+          cgroup: ''
+        lastmod: 1759779013145
+        uid: 5KnzgMdkC8MFTt
         behaviors: []
         extendTypes: ''
   - type: folder
@@ -1392,6 +1436,34 @@ assets:
             isBlank: false
             source: >-
               C:\Users\User\Documents\GitHub\ludum-dare-58\Assets\Card_Cuckoo.png
+      - lastmod: 1759778893263
+        type: texture
+        name: Help
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 0
+          - 0
+        marginx: 0
+        marginy: 0
+        imgWidth: 1280
+        imgHeight: 720
+        width: 1280
+        height: 720
+        offx: 0
+        offy: 0
+        origname: i9cJQPr9qp2hGTg.png
+        shape: rect
+        left: 0
+        right: 1280
+        top: 0
+        bottom: 720
+        uid: 9cJQPr9qp2hGTg
+        padding: 1
+        isBlank: false
+        source: /home/avenger/GitHub/adettori/ludum-dare-58/Assets/Art/Help.png
   - type: folder
     uid: 7MGK85gGf2PfkJ
     colorClass: success
@@ -1872,12 +1944,12 @@ assets:
 
                   // Combos match
                   if(compareBool && dpad.combo.length >= combo_array.length) {
-                      var bird_list = templates.list[bird]
-                      var eligible_birds = []
+                      var bird_list = templates.list[bird];
+                      var eligible_birds = [];
 
-                      for(const bird in bird_list) {
-                          if(!bird_list[bird].isOnPhotoSpot)
-                              eligible_birds.push(bird_list[bird]);
+                      for(const bird_inst in bird_list) {
+                          if(!bird_list[bird_inst].isOnPhotoSpot)
+                              eligible_birds.push(bird_list[bird_inst]);
                       }
 
                       var target_bird = eligible_birds[randIndex(eligible_birds.length)];
@@ -1893,6 +1965,8 @@ assets:
                           target_bird.direction = u.direction(target_bird, {x: target_bird.targetSpotX, y:target_bird.targetSpotY});
                           target_bird.isOnPhotoSpot = true;
                           dpad.photoAlreadyTriggered = false;
+                          this.bird_captured[bird] = true;
+                          console.log(bird + " captured!");
                       }
 
                       // Reset combo
@@ -1916,6 +1990,13 @@ assets:
         mappedType: text
         name: combo_bird
         readableName: Combo per bird
+        required: true
+        fixedLength: 0
+      - structure: map
+        type: text
+        mappedType: checkbox
+        name: bird_captured
+        readableName: Birds captured
         required: true
         fixedLength: 0
     extendTypes: ''
@@ -2204,7 +2285,12 @@ assets:
             Cuckoo: ''
             Buzzard: ''
             Cockatiel: ''
-        lastmod: 1759776826206
+          bird_captured:
+            Cuckoo: false
+            Cockatiel: false
+            Buzzard: false
+            Blackbird: false
+        lastmod: 1759779707282
         events: []
         behaviors:
           - nFb4kRtrq2ptPQ
@@ -2228,7 +2314,7 @@ assets:
         restrictMaxY: 720
         restrictMinY: 0
         isUi: true
-        name: Main Menu
+        name: MainMenu
         backgroundColor: '#000000'
         follow: -1
         backgrounds:
@@ -2256,9 +2342,21 @@ assets:
             exts: {}
             customProperties: {}
             bindings: {}
+          - x: 832
+            'y': 704
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 4.74074074
+              'y': 4.4137931
+            rotation: 0
+            uid: pj5NG79TQW1w3c
+            exts: {}
+            customProperties: {}
+            bindings: {}
         tiles: []
         extends: {}
-        lastmod: 1759776778796
+        lastmod: 1759779174728
         events: []
         behaviors: []
         extendTypes: ''
