@@ -361,6 +361,54 @@ assets:
         exts: {}
         customProperties: {}
         bindings: {}
+      - x: 1152
+        'y': 448
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: nL5WjpR1g2nCMF
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 640
+        'y': 256
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: nL5WjpR1g2nCMF
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 1280
+        'y': 192
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: nL5WjpR1g2nCMF
+        exts: {}
+        customProperties: {}
+        bindings: {}
+      - x: 640
+        'y': 256
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: nL5WjpR1g2nCMF
+        exts: {}
+        customProperties: {}
+        bindings: {}
     tiles: []
     extends:
       treeSpots: 0
@@ -375,7 +423,7 @@ assets:
         Bird_B: ''
         Bird_C: ''
         Bird_D: ''
-    lastmod: 1759746994747
+    lastmod: 1759749698425
     events: []
     behaviors:
       - nFb4kRtrq2ptPQ
@@ -430,7 +478,7 @@ assets:
             arguments: {}
             lib: core
           - eventKey: OnCreate
-            code: >
+            code: >-
               this.speed = 120
 
 
@@ -444,15 +492,20 @@ assets:
 
               this.direction = u.direction(this, {x: this.targetSpotX,
               y:this.targetSpotY})
+
+
+              this.isOnPhotoSpot = false;
             arguments: {}
             lib: core
           - eventKey: Timer1
-            code: >
+            code: >-
               console.log("Returning to fly");
 
               this.isOnPhotoSpot = false;
 
               this.speed = 120;
+
+              togglePhotoSpot(this.position.x, this.position.y);
 
 
               // Pick next spot and get direction
@@ -578,7 +631,7 @@ assets:
             required: false
             fixedLength: 0
         extendTypes: ''
-        lastmod: 1759678718640
+        lastmod: 1759749680511
         uid: Lf6MPhwNkFM9Gq
       - type: template
         baseClass: AnimatedSprite
@@ -1334,7 +1387,14 @@ assets:
                       // Combos match
                       if(compareBool) {
                           var bird_list = templates.list[bird];
-                          var target_bird = bird_list[randIndex(bird_list.length)];
+                          var eligible_birds = []
+
+                          for(const bird in bird_list) {
+                              if(!bird_list[bird].isOnPhotoSpot)
+                                  eligible_birds.push(bird_list[bird]);
+                          }
+
+                          var target_bird = eligible_birds[randIndex(eligible_birds.length)];
                           var target_spot = getPhotoSpot();
 
                           // Check if spot found is valid
