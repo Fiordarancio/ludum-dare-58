@@ -886,6 +886,9 @@ assets:
                                   card.textures = res.getTexture(`Card_${photoBird.birdType}`);
                                   this.photoOnScreen = true;
                                   this.photoAlreadyTriggered = true;
+                                  // Mark as captured
+                                  rooms.list["MainScene"][0].bird_captured[photoBird.birdType] = true;
+                                  console.log(photoBird.birdType + " captured!");
                               } else if(photoBird.isOnPhotoSpot) {
                                   togglePhotoSpot(photoBird.targetSpotX, photoBird.targetSpotY);
                                   var spot = nextTreeSpot(photoBird.position.x, photoBird.position.y);
@@ -901,6 +904,14 @@ assets:
               } else if(this.photoOnScreen) {
                   templates.list["PhotoView"][0].kill = true;
                   this.photoOnScreen = false;
+
+                  // If all captured, display win screen
+                  var allCaptured = true;
+                  for (const bird in rooms.list["MainScene"][0].bird_captured) {
+                      allCaptured = allCaptured && rooms.list["MainScene"][0].bird_captured[bird];
+                  }
+                  if(allCaptured)
+                      templates.copy("WinView", camera.width/5, camera.height/5);
               }
             arguments:
               action: Capture
@@ -1018,6 +1029,22 @@ assets:
           cgroup: ''
         lastmod: 1759779013145
         uid: 5KnzgMdkC8MFTt
+        behaviors: []
+        extendTypes: ''
+      - type: template
+        baseClass: AnimatedSprite
+        name: WinView
+        depth: 0
+        texture: HmCRfdh22crQpt
+        playAnimationOnStart: false
+        loopAnimation: true
+        animationFPS: 30
+        visible: true
+        events: []
+        extends:
+          cgroup: ''
+        lastmod: 1759780094120
+        uid: 3tmkq9rr9cczL3
         behaviors: []
         extendTypes: ''
   - type: folder
@@ -1464,6 +1491,34 @@ assets:
         padding: 1
         isBlank: false
         source: /home/avenger/GitHub/adettori/ludum-dare-58/Assets/Art/Help.png
+      - lastmod: 1759780081647
+        type: texture
+        name: Win
+        untill: 0
+        grid:
+          - 1
+          - 1
+        axis:
+          - 0
+          - 0
+        marginx: 0
+        marginy: 0
+        imgWidth: 1280
+        imgHeight: 720
+        width: 1280
+        height: 720
+        offx: 0
+        offy: 0
+        origname: iHmCRfdh22crQpt.png
+        shape: rect
+        left: 0
+        right: 1280
+        top: 0
+        bottom: 720
+        uid: HmCRfdh22crQpt
+        padding: 1
+        isBlank: false
+        source: /home/avenger/GitHub/adettori/ludum-dare-58/Assets/Art/Win.png
   - type: folder
     uid: 7MGK85gGf2PfkJ
     colorClass: success
@@ -1910,98 +1965,6 @@ assets:
         panning:
           refDistance: 0.5
           rolloffFactor: 1
-  - type: behavior
-    name: ComboLogic
-    behaviorType: room
-    events:
-      - eventKey: OnRoomStart
-        code: |-
-          this.combo_bird["Cuckoo"] = "aas"
-          this.combo_bird["Cockatiel"] = "adasw"
-          this.combo_bird["Blackbird"] = "wsaaa"
-          this.combo_bird["Buzzard"] = "wdwd"
-        arguments: {}
-        lib: core
-      - eventKey: OnDraw
-        code: |-
-          var templates_list = templates.list["Dpad"];
-          var birds_object = this.combo_bird;
-
-          if(templates_list.length == 1) {
-              var dpad = templates_list[0]; // First and only element
-              var potentialFutureCombo = false;
-              
-              for (const bird in birds_object) {
-                  var combo_array = this.combo_bird[bird];
-                  var compareBool = true;
-                  var lenToCompare = Math.min(combo_array.length, dpad.combo.length);
-
-                  // Match combo
-                  for(var i=0;i<lenToCompare;i++) {
-                      compareBool = compareBool && combo_array[i] == dpad.combo[i];
-                  }
-                  potentialFutureCombo = potentialFutureCombo || compareBool;
-
-                  // Combos match
-                  if(compareBool && dpad.combo.length >= combo_array.length) {
-                      var bird_list = templates.list[bird];
-                      var eligible_birds = [];
-
-                      for(const bird_inst in bird_list) {
-                          if(!bird_list[bird_inst].isOnPhotoSpot)
-                              eligible_birds.push(bird_list[bird_inst]);
-                      }
-
-                      var target_bird = eligible_birds[randIndex(eligible_birds.length)];
-                      var target_spot = getPhotoSpot();
-
-                      // Check if spot found is valid
-                      if(target_spot[0] != -1 && target_spot[1] != -1) {
-                          togglePhotoSpot(target_spot[0], target_spot[1]);
-                          console.log(eligible_birds);
-                          // Set next target
-                          target_bird.targetSpotX = target_spot[0];
-                          target_bird.targetSpotY = target_spot[1];
-                          target_bird.direction = u.direction(target_bird, {x: target_bird.targetSpotX, y:target_bird.targetSpotY});
-                          target_bird.isOnPhotoSpot = true;
-                          dpad.photoAlreadyTriggered = false;
-                          this.bird_captured[bird] = true;
-                          console.log(bird + " captured!");
-                      }
-
-                      // Reset combo
-                      dpad.combo.length = 0;
-                      break;
-                  }
-              }
-
-              if(!potentialFutureCombo) {
-                  // Reset combo
-                  dpad.combo.length = 0;
-              }
-          } else {
-              console.log("Error: incorrect amount of dpads detected, should be 1: " + templates_list.length);
-          }
-        arguments: {}
-        lib: core
-    specification:
-      - structure: map
-        type: text
-        mappedType: text
-        name: combo_bird
-        readableName: Combo per bird
-        required: true
-        fixedLength: 0
-      - structure: map
-        type: text
-        mappedType: checkbox
-        name: bird_captured
-        readableName: Birds captured
-        required: true
-        fixedLength: 0
-    extendTypes: ''
-    lastmod: 1759777151582
-    uid: nFb4kRtrq2ptPQ
   - type: folder
     uid: 5LfBTg9mH4CK2r
     colorClass: accent1
@@ -2290,7 +2253,7 @@ assets:
             Cockatiel: false
             Buzzard: false
             Blackbird: false
-        lastmod: 1759779707282
+        lastmod: 1759780569966
         events: []
         behaviors:
           - nFb4kRtrq2ptPQ
@@ -2361,6 +2324,96 @@ assets:
         behaviors: []
         extendTypes: ''
         uid: BdLPM7HMNMtRgJ
+      - type: behavior
+        name: GameLogic
+        behaviorType: room
+        events:
+          - eventKey: OnRoomStart
+            code: |-
+              this.combo_bird["Cuckoo"] = "aas"
+              this.combo_bird["Cockatiel"] = "adasw"
+              this.combo_bird["Blackbird"] = "wsaaa"
+              this.combo_bird["Buzzard"] = "wdwd"
+            arguments: {}
+            lib: core
+          - eventKey: OnDraw
+            code: |-
+              var templates_list = templates.list["Dpad"];
+              var birds_object = this.combo_bird;
+
+              if(templates_list.length == 1) {
+                  var dpad = templates_list[0]; // First and only element
+                  var potentialFutureCombo = false;
+                  
+                  for (const bird in birds_object) {
+                      var combo_array = this.combo_bird[bird];
+                      var compareBool = true;
+                      var lenToCompare = Math.min(combo_array.length, dpad.combo.length);
+
+                      // Match combo
+                      for(var i=0;i<lenToCompare;i++) {
+                          compareBool = compareBool && combo_array[i] == dpad.combo[i];
+                      }
+                      potentialFutureCombo = potentialFutureCombo || compareBool;
+
+                      // Combos match
+                      if(compareBool && dpad.combo.length >= combo_array.length) {
+                          var bird_list = templates.list[bird];
+                          var eligible_birds = [];
+
+                          for(const bird_inst in bird_list) {
+                              if(!bird_list[bird_inst].isOnPhotoSpot)
+                                  eligible_birds.push(bird_list[bird_inst]);
+                          }
+
+                          var target_bird = eligible_birds[randIndex(eligible_birds.length)];
+                          var target_spot = getPhotoSpot();
+
+                          // Check if spot found is valid
+                          if(target_spot[0] != -1 && target_spot[1] != -1) {
+                              togglePhotoSpot(target_spot[0], target_spot[1]);
+                              console.log(eligible_birds);
+                              // Set next target
+                              target_bird.targetSpotX = target_spot[0];
+                              target_bird.targetSpotY = target_spot[1];
+                              target_bird.direction = u.direction(target_bird, {x: target_bird.targetSpotX, y:target_bird.targetSpotY});
+                              target_bird.isOnPhotoSpot = true;
+                              dpad.photoAlreadyTriggered = false;
+                          }
+
+                          // Reset combo
+                          dpad.combo.length = 0;
+                          break;
+                      }
+                  }
+
+                  if(!potentialFutureCombo) {
+                      // Reset combo
+                      dpad.combo.length = 0;
+                  }
+              } else {
+                  console.log("Error: incorrect amount of dpads detected, should be 1: " + templates_list.length);
+              }
+            arguments: {}
+            lib: core
+        specification:
+          - structure: map
+            type: text
+            mappedType: text
+            name: combo_bird
+            readableName: Combo per bird
+            required: true
+            fixedLength: 0
+          - structure: map
+            type: text
+            mappedType: checkbox
+            name: bird_captured
+            readableName: Birds captured
+            required: true
+            fixedLength: 0
+        extendTypes: ''
+        lastmod: 1759780009350
+        uid: nFb4kRtrq2ptPQ
 globalVars: []
 settings:
   authoring:
