@@ -1422,7 +1422,7 @@ assets:
             Bird_B: ''
             Bird_C: ''
             Bird_D: ''
-        lastmod: 1759763844338
+        lastmod: 1759763922286
         events: []
         behaviors:
           - nFb4kRtrq2ptPQ
@@ -1462,13 +1462,13 @@ assets:
             scaleY: 1
             repeat: no-repeat
         copies:
-          - x: 1180
-            'y': 540
-            opacity: 1
+          - x: 978.5
+            'y': 550.75
+            opacity: 0
             tint: 16777215
             scale:
-              x: 12.5
-              'y': 12.5
+              x: 50.8125
+              'y': 13.84375
             rotation: 0
             uid: dwHzdDdmbjQ63J
             exts: {}
@@ -1476,7 +1476,7 @@ assets:
             bindings: {}
         tiles: []
         extends: {}
-        lastmod: 1759763641954
+        lastmod: 1759764412112
         events: []
         behaviors: []
         extendTypes: ''
