@@ -27,6 +27,7 @@ Assets/Art/*.xcf
 Assets/Art/*.gif
 
 # Ignore other folders
+Builds/
 References/
 Screenshots/
 
