@@ -148,12 +148,12 @@ assets:
     entries:
       - type: template
         baseClass: AnimatedSprite
-        name: Bird_A
+        name: Cuckoo
         depth: 0
-        texture: CLqtnbmKTFqcwc
-        playAnimationOnStart: false
-        loopAnimation: false
-        animationFPS: 30
+        texture: kHnmkNmFkzLMM5
+        playAnimationOnStart: true
+        loopAnimation: true
+        animationFPS: 6
         visible: true
         events:
           - eventKey: OnDraw
@@ -172,6 +172,8 @@ assets:
                           // Wait seconds
                           this.timer1 = this.photoSeconds;
                           // Put on cool sprite
+                          this.textures = res.getTexture('Cuckoo_idle');
+                          this.play();
                       }
                       else { // Continue flying
                           // Pick next spot and get direction
@@ -183,6 +185,11 @@ assets:
                       }
                   }
               }
+
+              // Flip sprite depending on direction
+              if (this.direction >= 90 && this.direction <= 270) 
+                  this.scale.x = 1;
+              else this.scale.x = -1;
 
               this.move()
             arguments: {}
@@ -208,7 +215,7 @@ assets:
             arguments: {}
             lib: core
           - eventKey: Timer1
-            code: >
+            code: >-
               console.log("Returning to fly");
 
               this.isOnPhotoSpot = false;
@@ -230,6 +237,13 @@ assets:
 
               this.direction = u.direction(this, {x: this.targetSpotX,
               y:this.targetSpotY});
+
+
+              // Return to generic texture
+
+              this.textures = res.getTexture('Bird_flying')
+
+              this.play();
             arguments:
               name: Photo end
               isUi: false
@@ -245,12 +259,21 @@ assets:
             'y': 0
           isOnPhotoSpot: false
           photoSeconds: 3
-        lastmod: 1759761412165
+          isPointingRight: false
+          birdType: Cuckoo
+        lastmod: 1759771110025
         uid: nL5WjpR1g2nCMF
         behaviors:
           - tL8L74bG19RKmN
           - Lf6MPhwNkFM9Gq
         extendTypes: ''
+        tilingSettings:
+          scrollSpeedX: 0
+          scrollSpeedY: 0
+          pixelPerfect: false
+          isUi: false
+        repeaterSettings:
+          defaultCount: 3
       - type: behavior
         name: SoundArea
         behaviorType: template
@@ -288,14 +311,21 @@ assets:
             readableName: birdSound
             required: true
             fixedLength: 0
+          - structure: atomic
+            type: text
+            mappedType: number
+            name: birdType
+            readableName: birdType
+            required: true
+            fixedLength: 0
         extendTypes: ''
-        lastmod: 1759680260056
+        lastmod: 1759771037494
         uid: tL8L74bG19RKmN
       - type: template
         baseClass: AnimatedSprite
         name: TreeSpot
         depth: 0
-        texture: 3k1H1q97FLTFrW
+        texture: -1
         playAnimationOnStart: false
         loopAnimation: true
         animationFPS: 30
@@ -303,7 +333,7 @@ assets:
         events: []
         extends:
           cgroup: TreeSpot
-        lastmod: 1759678491175
+        lastmod: 1759768311980
         uid: WPcLqW4147Ft77
         behaviors: []
         extendTypes: ''
@@ -347,7 +377,7 @@ assets:
         baseClass: AnimatedSprite
         name: PhotoSpot
         depth: 0
-        texture: qJk3JzTmGNCRWj
+        texture: -1
         playAnimationOnStart: false
         loopAnimation: true
         animationFPS: 30
@@ -355,7 +385,8 @@ assets:
         events: []
         extends:
           cgroup: ''
-        lastmod: 1759741700013
+          occupied: false
+        lastmod: 1759770160781
         uid: 16Pp9Bw4hmFhwR
         behaviors:
           - cJfhfMf11pQ7Qp
@@ -373,8 +404,392 @@ assets:
             required: true
             fixedLength: 0
         extendTypes: ''
-        lastmod: 1759757220877
+        lastmod: 1759770162600
         uid: cJfhfMf11pQ7Qp
+      - type: template
+        baseClass: AnimatedSprite
+        name: Buzzard
+        depth: 0
+        texture: kHnmkNmFkzLMM5
+        playAnimationOnStart: true
+        loopAnimation: true
+        animationFPS: 6
+        visible: true
+        events:
+          - eventKey: OnDraw
+            code: |-
+              // While flying, check if we reach a treeSpot or photoSpot
+              if (this.speed != 0) {
+                  // Check if we arrived to target spot
+                  const target = { x: this.targetSpotX, y: this.targetSpotY};
+                  const shouldStop = u.distance(this, target) < 10;
+                  if (shouldStop) {
+                      // Move directly to target position
+                      this.position = target;
+                      // Stop if on photoTarget and wait
+                      if (this.isOnPhotoSpot) {
+                          this.speed = 0;
+                          // Wait seconds
+                          this.timer1 = this.photoSeconds;
+                          // Put on cool sprite
+                          this.textures = res.getTexture('Buzzard_idle');
+                          this.play();
+                      }
+                      else { // Continue flying
+                          // Pick next spot and get direction
+                          var spot = nextTreeSpot(target.x, target.y);
+                          this.targetSpotX = spot[0];
+                          this.targetSpotY = spot[1];
+                          // Get direction
+                          this.direction = u.direction(this, {x: this.targetSpotX, y:this.targetSpotY});
+                      }
+                  }
+              }
+
+              // Flip sprite depending on direction
+              if (this.direction >= 90 && this.direction <= 270) 
+                  this.scale.x = 1;
+              else this.scale.x = -1;
+
+              this.move()
+            arguments: {}
+            lib: core
+          - eventKey: OnCreate
+            code: >-
+              this.speed = 120
+
+
+              // Initial spot and direction
+
+              const firstSpot = nextTreeSpot(this.position.x, this.position.y);
+
+              this.targetSpotX = firstSpot[0];
+
+              this.targetSpotY = firstSpot[1];
+
+              this.direction = u.direction(this, {x: this.targetSpotX,
+              y:this.targetSpotY})
+
+
+              this.isOnPhotoSpot = false;
+            arguments: {}
+            lib: core
+          - eventKey: Timer1
+            code: >-
+              console.log("Returning to fly");
+
+              this.isOnPhotoSpot = false;
+
+              this.speed = 120;
+
+              togglePhotoSpot(this.position.x, this.position.y);
+
+
+              // Pick next spot and get direction
+
+              var spot = nextTreeSpot(this.position.x, this.position.y);
+
+              this.targetSpotX = spot[0];
+
+              this.targetSpotY = spot[1];
+
+              // Get direction
+
+              this.direction = u.direction(this, {x: this.targetSpotX,
+              y:this.targetSpotY});
+
+
+              // Return to generic texture
+
+              this.textures = res.getTexture('Bird_flying')
+
+              this.play();
+            arguments:
+              name: Photo end
+              isUi: false
+            lib: core
+        extends:
+          cgroup: Bird
+          isPlayerPointing: false
+          birdSound: 2n32prWLKBfkk6
+          targetSpotX: 0
+          targetSpotY: 0
+          targetSpot:
+            x: 0
+            'y': 0
+          isOnPhotoSpot: false
+          photoSeconds: 3
+          isPointingRight: false
+          birdType: Buzzard
+        lastmod: 1759771123063
+        uid: p68TLLJ2Bg4pg9
+        behaviors:
+          - tL8L74bG19RKmN
+          - Lf6MPhwNkFM9Gq
+        extendTypes: ''
+        tilingSettings:
+          scrollSpeedX: 0
+          scrollSpeedY: 0
+          pixelPerfect: false
+          isUi: false
+        repeaterSettings:
+          defaultCount: 3
+      - type: template
+        baseClass: AnimatedSprite
+        name: Cockatiel
+        depth: 0
+        texture: kHnmkNmFkzLMM5
+        playAnimationOnStart: true
+        loopAnimation: true
+        animationFPS: 6
+        visible: true
+        events:
+          - eventKey: OnDraw
+            code: |-
+              // While flying, check if we reach a treeSpot or photoSpot
+              if (this.speed != 0) {
+                  // Check if we arrived to target spot
+                  const target = { x: this.targetSpotX, y: this.targetSpotY};
+                  const shouldStop = u.distance(this, target) < 10;
+                  if (shouldStop) {
+                      // Move directly to target position
+                      this.position = target;
+                      // Stop if on photoTarget and wait
+                      if (this.isOnPhotoSpot) {
+                          this.speed = 0;
+                          // Wait seconds
+                          this.timer1 = this.photoSeconds;
+                          // Put on cool sprite
+                          this.textures = res.getTexture('Cockatiel_idle');
+                          this.play();
+                      }
+                      else { // Continue flying
+                          // Pick next spot and get direction
+                          var spot = nextTreeSpot(target.x, target.y);
+                          this.targetSpotX = spot[0];
+                          this.targetSpotY = spot[1];
+                          // Get direction
+                          this.direction = u.direction(this, {x: this.targetSpotX, y:this.targetSpotY});
+                      }
+                  }
+              }
+
+              // Flip sprite depending on direction
+              if (this.direction >= 90 && this.direction <= 270) 
+                  this.scale.x = 1;
+              else this.scale.x = -1;
+
+              this.move()
+            arguments: {}
+            lib: core
+          - eventKey: OnCreate
+            code: >-
+              this.speed = 120
+
+
+              // Initial spot and direction
+
+              const firstSpot = nextTreeSpot(this.position.x, this.position.y);
+
+              this.targetSpotX = firstSpot[0];
+
+              this.targetSpotY = firstSpot[1];
+
+              this.direction = u.direction(this, {x: this.targetSpotX,
+              y:this.targetSpotY})
+
+
+              this.isOnPhotoSpot = false;
+            arguments: {}
+            lib: core
+          - eventKey: Timer1
+            code: >-
+              console.log("Returning to fly");
+
+              this.isOnPhotoSpot = false;
+
+              this.speed = 120;
+
+              togglePhotoSpot(this.position.x, this.position.y);
+
+
+              // Pick next spot and get direction
+
+              var spot = nextTreeSpot(this.position.x, this.position.y);
+
+              this.targetSpotX = spot[0];
+
+              this.targetSpotY = spot[1];
+
+              // Get direction
+
+              this.direction = u.direction(this, {x: this.targetSpotX,
+              y:this.targetSpotY});
+
+
+              // Return to generic texture
+
+              this.textures = res.getTexture('Bird_flying')
+
+              this.play();
+            arguments:
+              name: Photo end
+              isUi: false
+            lib: core
+        extends:
+          cgroup: Bird
+          isPlayerPointing: false
+          birdSound: 2n32prWLKBfkk6
+          targetSpotX: 0
+          targetSpotY: 0
+          targetSpot:
+            x: 0
+            'y': 0
+          isOnPhotoSpot: false
+          photoSeconds: 3
+          isPointingRight: false
+          birdType: Cockatiel
+        lastmod: 1759771125876
+        uid: j5T4z3r4wbRDJT
+        behaviors:
+          - tL8L74bG19RKmN
+          - Lf6MPhwNkFM9Gq
+        extendTypes: ''
+        tilingSettings:
+          scrollSpeedX: 0
+          scrollSpeedY: 0
+          pixelPerfect: false
+          isUi: false
+        repeaterSettings:
+          defaultCount: 3
+      - type: template
+        baseClass: AnimatedSprite
+        name: Blackbird
+        depth: 0
+        texture: kHnmkNmFkzLMM5
+        playAnimationOnStart: true
+        loopAnimation: true
+        animationFPS: 6
+        visible: true
+        events:
+          - eventKey: OnDraw
+            code: |-
+              // While flying, check if we reach a treeSpot or photoSpot
+              if (this.speed != 0) {
+                  // Check if we arrived to target spot
+                  const target = { x: this.targetSpotX, y: this.targetSpotY};
+                  const shouldStop = u.distance(this, target) < 10;
+                  if (shouldStop) {
+                      // Move directly to target position
+                      this.position = target;
+                      // Stop if on photoTarget and wait
+                      if (this.isOnPhotoSpot) {
+                          this.speed = 0;
+                          // Wait seconds
+                          this.timer1 = this.photoSeconds;
+                          // Put on cool sprite
+                          this.textures = res.getTexture('Blackbird_idle');
+                          this.play();
+                      }
+                      else { // Continue flying
+                          // Pick next spot and get direction
+                          var spot = nextTreeSpot(target.x, target.y);
+                          this.targetSpotX = spot[0];
+                          this.targetSpotY = spot[1];
+                          // Get direction
+                          this.direction = u.direction(this, {x: this.targetSpotX, y:this.targetSpotY});
+                      }
+                  }
+              }
+
+              // Flip sprite depending on direction
+              if (this.direction >= 90 && this.direction <= 270) 
+                  this.scale.x = 1;
+              else this.scale.x = -1;
+
+              this.move()
+            arguments: {}
+            lib: core
+          - eventKey: OnCreate
+            code: >-
+              this.speed = 120
+
+
+              // Initial spot and direction
+
+              const firstSpot = nextTreeSpot(this.position.x, this.position.y);
+
+              this.targetSpotX = firstSpot[0];
+
+              this.targetSpotY = firstSpot[1];
+
+              this.direction = u.direction(this, {x: this.targetSpotX,
+              y:this.targetSpotY})
+
+
+              this.isOnPhotoSpot = false;
+            arguments: {}
+            lib: core
+          - eventKey: Timer1
+            code: >-
+              console.log("Returning to fly");
+
+              this.isOnPhotoSpot = false;
+
+              this.speed = 120;
+
+              togglePhotoSpot(this.position.x, this.position.y);
+
+
+              // Pick next spot and get direction
+
+              var spot = nextTreeSpot(this.position.x, this.position.y);
+
+              this.targetSpotX = spot[0];
+
+              this.targetSpotY = spot[1];
+
+              // Get direction
+
+              this.direction = u.direction(this, {x: this.targetSpotX,
+              y:this.targetSpotY});
+
+
+              // Return to generic texture
+
+              this.textures = res.getTexture('Bird_flying')
+
+              this.play();
+            arguments:
+              name: Photo end
+              isUi: false
+            lib: core
+        extends:
+          cgroup: Bird
+          isPlayerPointing: false
+          birdSound: 2n32prWLKBfkk6
+          targetSpotX: 0
+          targetSpotY: 0
+          targetSpot:
+            x: 0
+            'y': 0
+          isOnPhotoSpot: false
+          photoSeconds: 3
+          isPointingRight: false
+          birdType: Blackbird
+        lastmod: 1759771118771
+        uid: mWNtnr5ncttJP5
+        behaviors:
+          - tL8L74bG19RKmN
+          - Lf6MPhwNkFM9Gq
+        extendTypes: ''
+        tilingSettings:
+          scrollSpeedX: 0
+          scrollSpeedY: 0
+          pixelPerfect: false
+          isUi: false
+        repeaterSettings:
+          defaultCount: 3
   - type: folder
     uid: pkjrtnLhC9NBrD
     colorClass: text
@@ -405,7 +820,7 @@ assets:
           comboMaxLen: 0
           photoOnScreen: false
           photoAlreadyTriggered: ''
-        lastmod: 1759763693000
+        lastmod: 1759770164611
         uid: 4Qw6bgfwpMH34J
         behaviors:
           - dHtwh8wh7QdhrQ
@@ -449,22 +864,24 @@ assets:
                   
                   var birds_object = rooms.list["MainScene"][0].combo_bird;
                   var spot = templates.list["PhotoSpot"][0];
-
+                  
                   if(spot.occupied) {
                       for (const bird in birds_object) {
                           var bird_list = templates.list[bird];
 
                           for(const bird in bird_list) {
-                              if(bird_list[bird].isOnPhotoSpot && bird_list[bird].speed == 0) {
-                                  templates.copy("PhotoView", camera.width/2, camera.height/2);
+                              const photoBird = bird_list[bird];
+                              if(photoBird.isOnPhotoSpot && photoBird.speed == 0) {
+                                  const card = templates.copy("PhotoView", camera.width/2, camera.height/2);
+                                  card.textures = res.getTexture(`Card_${photoBird.birdType}`);
                                   this.photoOnScreen = true;
                                   this.photoAlreadyTriggered = true;
                               } else {
-                                  var spot = nextTreeSpot(bird_list[bird].position.x, bird_list[bird].position.y);
-                                  bird_list[bird].targetSpotX = spot[0];
-                                  bird_list[bird].targetSpotY = spot[1];
+                                  var spot = nextTreeSpot(photoBird.position.x, photoBird.position.y);
+                                  photoBird.targetSpotX = spot[0];
+                                  photoBird.targetSpotY = spot[1];
                                   // Get direction
-                                  bird_list[bird].direction = u.direction(bird_list[bird], {x: bird_list[bird].targetSpotX, y:bird_list[bird].targetSpotY});
+                                  photoBird.direction = u.direction(photoBird, {x: photoBird.targetSpotX, y:photoBird.targetSpotY});
                               }
                           }
                       }
@@ -506,7 +923,7 @@ assets:
             required: false
             fixedLength: 0
         extendTypes: ''
-        lastmod: 1759759296850
+        lastmod: 1759772437320
         uid: dHtwh8wh7QdhrQ
       - type: template
         baseClass: AnimatedSprite
@@ -528,7 +945,7 @@ assets:
             lib: core
         extends:
           cgroup: ''
-        lastmod: 1759758898371
+        lastmod: 1759770192406
         uid: dwHzdDdmbjQ63J
         behaviors: []
         extendTypes: ''
@@ -536,16 +953,16 @@ assets:
         baseClass: AnimatedSprite
         name: PhotoView
         depth: 0
-        texture: ckkCGgLQTDpzjQ
+        texture: 2C4Q7QHdnW36F5
         playAnimationOnStart: false
-        loopAnimation: true
+        loopAnimation: false
         animationFPS: 30
         visible: true
         events: []
         extends:
           cgroup: ''
-        lastmod: 1759759598875
-        uid: w7hMB8gTtFDwBn
+        lastmod: 1759772524963
+        uid: K4HCpn3qDmDwpc
         behaviors: []
         extendTypes: ''
   - type: folder
@@ -555,125 +972,6 @@ assets:
     name: Textures
     lastmod: 1759590857058
     entries:
-      - lastmod: 1759598765752
-        type: texture
-        name: bird_C
-        untill: 0
-        grid:
-          - 1
-          - 1
-        axis:
-          - 96
-          - 96
-        marginx: 0
-        marginy: 0
-        imgWidth: 192
-        imgHeight: 192
-        width: 192
-        height: 192
-        offx: 0
-        offy: 0
-        origname: i6fh3wTJz3HtHg2.png
-        shape: circle
-        left: 96
-        right: 96
-        top: 96
-        bottom: 96
-        uid: 6fh3wTJz3HtHg2
-        padding: 1
-        isBlank: false
-        source: >-
-          C:\Users\User\Documents\GitHub\ludum-dare-58\Collector\Assets\bird_C.png
-        r: 96
-      - lastmod: 1759596654276
-        type: texture
-        name: bird_A
-        untill: 0
-        grid:
-          - 1
-          - 1
-        axis:
-          - 32
-          - 32
-        marginx: 0
-        marginy: 0
-        imgWidth: 64
-        imgHeight: 64
-        width: 64
-        height: 64
-        offx: 0
-        offy: 0
-        origname: iCLqtnbmKTFqcwc.png
-        shape: circle
-        left: 32
-        right: 32
-        top: 32
-        bottom: 32
-        uid: CLqtnbmKTFqcwc
-        padding: 1
-        isBlank: false
-        source: >-
-          C:\Users\User\Documents\GitHub\ludum-dare-58\Collector\Assets\bird_A.png
-        r: 32
-      - lastmod: 1759596662821
-        type: texture
-        name: bird_B
-        untill: 0
-        grid:
-          - 1
-          - 1
-        axis:
-          - 64
-          - 64
-        marginx: 0
-        marginy: 0
-        imgWidth: 128
-        imgHeight: 128
-        width: 128
-        height: 128
-        offx: 0
-        offy: 0
-        origname: iqhCkr9pFgjJLqL.png
-        shape: circle
-        left: 64
-        right: 64
-        top: 64
-        bottom: 64
-        uid: qhCkr9pFgjJLqL
-        padding: 1
-        isBlank: false
-        source: >-
-          C:\Users\User\Documents\GitHub\ludum-dare-58\Collector\Assets\bird_B.png
-        r: 64
-      - lastmod: 1759598978446
-        type: texture
-        name: bird_D
-        untill: 0
-        grid:
-          - 1
-          - 1
-        axis:
-          - 0
-          - 0
-        marginx: 0
-        marginy: 0
-        imgWidth: 64
-        imgHeight: 64
-        width: 64
-        height: 64
-        offx: 0
-        offy: 0
-        origname: ickkCGgLQTDpzjQ.png
-        shape: rect
-        left: 0
-        right: 64
-        top: 0
-        bottom: 64
-        uid: ckkCGgLQTDpzjQ
-        padding: 1
-        isBlank: false
-        source: >-
-          C:\Users\User\Documents\GitHub\ludum-dare-58\Collector\Assets\bird_A.png
       - lastmod: 1759684611114
         type: texture
         name: treeSpot
@@ -745,7 +1043,7 @@ assets:
         isBlank: false
         source: >-
           C:\Users\User\Documents\GitHub\ludum-dare-58\Collector\Assets\photoSpot.png
-      - lastmod: 1759763537115
+      - lastmod: 1759765732489
         type: texture
         name: MainScene
         untill: 0
@@ -803,6 +1101,286 @@ assets:
         isBlank: false
         source: /home/avenger/GitHub/adettori/ludum-dare-58/Assets/ExampleMenu.png
         tiled: true
+      - type: folder
+        uid: Gd98BHMnzrNHTz
+        colorClass: act
+        icon: texture
+        name: Birds
+        lastmod: 1759765487280
+        entries:
+          - lastmod: 1759766689256
+            type: texture
+            name: Bird_flying
+            untill: 0
+            grid:
+              - 3
+              - 1
+            axis:
+              - 32
+              - 32
+            marginx: 0
+            marginy: 0
+            imgWidth: 192
+            imgHeight: 64
+            width: 64
+            height: 64
+            offx: 0
+            offy: 0
+            origname: ikHnmkNmFkzLMM5.png
+            shape: circle
+            left: 0
+            right: 192
+            top: 0
+            bottom: 64
+            uid: kHnmkNmFkzLMM5
+            padding: 1
+            isBlank: false
+            source: >-
+              C:\Users\User\Documents\GitHub\ludum-dare-58\Assets\Bird_flying.png
+            r: 32
+          - lastmod: 1759765219724
+            type: texture
+            name: Blackbird_idle
+            untill: 0
+            grid:
+              - 2
+              - 1
+            axis:
+              - 64
+              - 64
+            marginx: 0
+            marginy: 0
+            imgWidth: 256
+            imgHeight: 128
+            width: 128
+            height: 128
+            offx: 0
+            offy: 0
+            origname: inrtn2wP4Kc5cqw.png
+            shape: circle
+            left: 64
+            right: 64
+            top: 64
+            bottom: 64
+            uid: nrtn2wP4Kc5cqw
+            padding: 1
+            isBlank: false
+            source: >-
+              C:\Users\User\Documents\GitHub\ludum-dare-58\Assets\Blackbird_idle.png
+            r: 64
+          - lastmod: 1759765212615
+            type: texture
+            name: Buzzard_idle
+            untill: 0
+            grid:
+              - 2
+              - 1
+            axis:
+              - 64
+              - 64
+            marginx: 0
+            marginy: 0
+            imgWidth: 256
+            imgHeight: 128
+            width: 128
+            height: 128
+            offx: 0
+            offy: 0
+            origname: izjL8t62mHwNPBC.png
+            shape: circle
+            left: 0
+            right: 256
+            top: 0
+            bottom: 128
+            uid: zjL8t62mHwNPBC
+            padding: 1
+            isBlank: false
+            source: >-
+              C:\Users\User\Documents\GitHub\ludum-dare-58\Assets\Buzzard_idle.png
+            r: 64
+          - lastmod: 1759765251209
+            type: texture
+            name: Cockatiel_idle
+            untill: 0
+            grid:
+              - 2
+              - 1
+            axis:
+              - 64
+              - 64
+            marginx: 0
+            marginy: 0
+            imgWidth: 256
+            imgHeight: 128
+            width: 128
+            height: 128
+            offx: 0
+            offy: 0
+            origname: if4DrQQfLB3TRHb.png
+            shape: circle
+            left: 0
+            right: 256
+            top: 0
+            bottom: 128
+            uid: f4DrQQfLB3TRHb
+            padding: 1
+            isBlank: false
+            source: >-
+              C:\Users\User\Documents\GitHub\ludum-dare-58\Assets\Cockatiel_idle.png
+            r: 64
+          - lastmod: 1759765283048
+            type: texture
+            name: Cuckoo_idle
+            untill: 0
+            grid:
+              - 2
+              - 1
+            axis:
+              - 64
+              - 64
+            marginx: 0
+            marginy: 0
+            imgWidth: 256
+            imgHeight: 128
+            width: 128
+            height: 128
+            offx: 0
+            offy: 0
+            origname: int9kPWNgtfGtqN.png
+            shape: circle
+            left: 0
+            right: 256
+            top: 0
+            bottom: 128
+            uid: nt9kPWNgtfGtqN
+            padding: 1
+            isBlank: false
+            source: >-
+              C:\Users\User\Documents\GitHub\ludum-dare-58\Assets\Cuckoo_idle.png
+            r: 64
+      - type: folder
+        uid: BT13w1J4G3P1Kp
+        colorClass: act
+        icon: texture
+        name: Cards
+        lastmod: 1759765509722
+        entries:
+          - lastmod: 1759772492086
+            type: texture
+            name: Card_Blackbird
+            untill: 0
+            grid:
+              - 1
+              - 1
+            axis:
+              - 320
+              - 476
+            marginx: 0
+            marginy: 0
+            imgWidth: 640
+            imgHeight: 952
+            width: 640
+            height: 952
+            offx: 0
+            offy: 0
+            origname: i2C4Q7QHdnW36F5.png
+            shape: rect
+            left: 320
+            right: 320
+            top: 476
+            bottom: 476
+            uid: 2C4Q7QHdnW36F5
+            padding: 1
+            isBlank: false
+            source: >-
+              C:\Users\User\Documents\GitHub\ludum-dare-58\Assets\Card_Blackbird.png
+          - lastmod: 1759772488785
+            type: texture
+            name: Card_Buzzard
+            untill: 0
+            grid:
+              - 1
+              - 1
+            axis:
+              - 320
+              - 476
+            marginx: 0
+            marginy: 0
+            imgWidth: 640
+            imgHeight: 952
+            width: 640
+            height: 952
+            offx: 0
+            offy: 0
+            origname: iGCkK3m79TkQnFK.png
+            shape: rect
+            left: 320
+            right: 320
+            top: 476
+            bottom: 476
+            uid: GCkK3m79TkQnFK
+            padding: 1
+            isBlank: false
+            source: >-
+              C:\Users\User\Documents\GitHub\ludum-dare-58\Assets\Card_Buzzard.png
+          - lastmod: 1759772486651
+            type: texture
+            name: Card_Cockatiel
+            untill: 0
+            grid:
+              - 1
+              - 1
+            axis:
+              - 320
+              - 476
+            marginx: 0
+            marginy: 0
+            imgWidth: 640
+            imgHeight: 952
+            width: 640
+            height: 952
+            offx: 0
+            offy: 0
+            origname: i16N6GLT5N4bDMt.png
+            shape: rect
+            left: 320
+            right: 320
+            top: 476
+            bottom: 476
+            uid: 16N6GLT5N4bDMt
+            padding: 1
+            isBlank: false
+            source: >-
+              C:\Users\User\Documents\GitHub\ludum-dare-58\Assets\Card_Cockatiel.png
+          - lastmod: 1759772484186
+            type: texture
+            name: Card_Cuckoo
+            untill: 0
+            grid:
+              - 1
+              - 1
+            axis:
+              - 320
+              - 476
+            marginx: 0
+            marginy: 0
+            imgWidth: 640
+            imgHeight: 952
+            width: 640
+            height: 952
+            offx: 0
+            offy: 0
+            origname: iDrnR98tFFt1z5n.png
+            shape: rect
+            left: 320
+            right: 320
+            top: 476
+            bottom: 476
+            uid: DrnR98tFFt1z5n
+            padding: 1
+            isBlank: false
+            source: >-
+              C:\Users\User\Documents\GitHub\ludum-dare-58\Assets\Card_Cuckoo.png
   - type: folder
     uid: 7MGK85gGf2PfkJ
     colorClass: success
@@ -1104,10 +1682,10 @@ assets:
     events:
       - eventKey: OnRoomStart
         code: |-
-          this.combo_bird["Bird_A"] = "wasd"
-          this.combo_bird["Bird_B"] = "asdw"
-          this.combo_bird["Bird_C"] = "sdwa"
-          this.combo_bird["Bird_D"] = "dwas"
+          this.combo_bird["Cuckoo"] = "wasd"
+          this.combo_bird["Cockatiel"] = "asdw"
+          this.combo_bird["Blackbird"] = "sdwa"
+          this.combo_bird["Buzzard"] = "dwas"
         arguments: {}
         lib: core
       - eventKey: OnDraw
@@ -1131,7 +1709,7 @@ assets:
 
                       // Combos match
                       if(compareBool) {
-                          var bird_list = templates.list[bird];
+                          var bird_list = templates.list[bird]
                           var eligible_birds = []
 
                           for(const bird in bird_list) {
@@ -1173,7 +1751,7 @@ assets:
         required: true
         fixedLength: 0
     extendTypes: ''
-    lastmod: 1759763051488
+    lastmod: 1759772156150
     uid: nFb4kRtrq2ptPQ
   - type: folder
     uid: 5LfBTg9mH4CK2r
@@ -1229,7 +1807,7 @@ assets:
             customProperties: {}
             bindings: {}
           - x: 1088
-            'y': 704
+            'y': 640
             opacity: 1
             tint: 16777215
             scale:
@@ -1240,8 +1818,8 @@ assets:
             exts: {}
             customProperties: {}
             bindings: {}
-          - x: 1792
-            'y': 384
+          - x: 1856
+            'y': 448
             opacity: 1
             tint: 16777215
             scale:
@@ -1252,8 +1830,8 @@ assets:
             exts: {}
             customProperties: {}
             bindings: {}
-          - x: 64
-            'y': 832
+          - x: 128
+            'y': 960
             opacity: 1
             tint: 16777215
             scale:
@@ -1288,8 +1866,8 @@ assets:
             exts: {}
             customProperties: {}
             bindings: {}
-          - x: 1664
-            'y': 64
+          - x: 1600
+            'y': 128
             opacity: 1
             tint: 16777215
             scale:
@@ -1300,19 +1878,7 @@ assets:
             exts: {}
             customProperties: {}
             bindings: {}
-          - x: -64
-            'y': 576
-            opacity: 1
-            tint: 16777215
-            scale:
-              x: 1
-              'y': 1
-            rotation: 0
-            uid: WPcLqW4147Ft77
-            exts: {}
-            customProperties: {}
-            bindings: {}
-          - x: 2048
+          - x: 2176
             'y': 576
             opacity: 1
             tint: 16777215
@@ -1336,8 +1902,8 @@ assets:
             exts: {}
             customProperties: {}
             bindings: {}
-          - x: 1728
-            'y': 832
+          - x: 1664
+            'y': 768
             opacity: 1
             tint: 16777215
             scale:
@@ -1348,31 +1914,19 @@ assets:
             exts: {}
             customProperties: {}
             bindings: {}
-          - x: 256
-            'y': 64
+          - x: 320
+            'y': 512
             opacity: 1
             tint: 16777215
             scale:
               x: 1
               'y': 1
             rotation: 0
-            uid: nL5WjpR1g2nCMF
+            uid: WPcLqW4147Ft77
             exts: {}
             customProperties: {}
             bindings: {}
-          - x: 1152
-            'y': 448
-            opacity: 1
-            tint: 16777215
-            scale:
-              x: 1
-              'y': 1
-            rotation: 0
-            uid: nL5WjpR1g2nCMF
-            exts: {}
-            customProperties: {}
-            bindings: {}
-          - x: 640
+          - x: 832
             'y': 256
             opacity: 1
             tint: 16777215
@@ -1380,12 +1934,72 @@ assets:
               x: 1
               'y': 1
             rotation: 0
-            uid: nL5WjpR1g2nCMF
+            uid: WPcLqW4147Ft77
             exts: {}
             customProperties: {}
             bindings: {}
-          - x: 1280
-            'y': 192
+          - x: 128
+            'y': 128
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            rotation: 0
+            uid: mWNtnr5ncttJP5
+            exts: {}
+            customProperties: {}
+            bindings: {}
+          - x: 1792
+            'y': 128
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            rotation: 0
+            uid: mWNtnr5ncttJP5
+            exts: {}
+            customProperties: {}
+            bindings: {}
+          - x: 448
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            rotation: 0
+            uid: j5T4z3r4wbRDJT
+            exts: {}
+            customProperties: {}
+            bindings: {}
+          - x: 1536
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            rotation: 0
+            uid: j5T4z3r4wbRDJT
+            exts: {}
+            customProperties: {}
+            bindings: {}
+          - x: 960
+            'y': 256
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            rotation: 0
+            uid: p68TLLJ2Bg4pg9
+            exts: {}
+            customProperties: {}
+            bindings: {}
+          - x: 512
+            'y': 512
             opacity: 1
             tint: 16777215
             scale:
@@ -1396,8 +2010,8 @@ assets:
             exts: {}
             customProperties: {}
             bindings: {}
-          - x: 640
-            'y': 256
+          - x: 1408
+            'y': 512
             opacity: 1
             tint: 16777215
             scale:
@@ -1422,7 +2036,7 @@ assets:
             Bird_B: ''
             Bird_C: ''
             Bird_D: ''
-        lastmod: 1759763922286
+        lastmod: 1759770698723
         events: []
         behaviors:
           - nFb4kRtrq2ptPQ
@@ -1476,7 +2090,7 @@ assets:
             bindings: {}
         tiles: []
         extends: {}
-        lastmod: 1759764412112
+        lastmod: 1759765704901
         events: []
         behaviors: []
         extendTypes: ''
