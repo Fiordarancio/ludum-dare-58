@@ -2,7 +2,7 @@
 
 __Theme: Collector__
 
-Time to chill! Sit down and relax with your camera on a beautiful terrace: the sky is full of birds and you're a master at whistling. Just a few notes and they'll come for you to take a picture... it's just a matter of knowing what to sing!
+Sit down and relax with your camera on a beautiful terrace: the sky is full of birds and you're a master at whistling. Just a few notes and they'll come for you to take a picture... it's just a matter of knowing what to sing!
 
 ## How to play
 
@@ -24,4 +24,4 @@ _Music and sound design_ - ste-dtst
 
 _Secret sounds_ - HippityHoppity
 
-Some sfx have been remixed from freesound.org samples. See in game credits for more details.
+Some sfx are based on freesound.org samples. See in game credits for more details.
